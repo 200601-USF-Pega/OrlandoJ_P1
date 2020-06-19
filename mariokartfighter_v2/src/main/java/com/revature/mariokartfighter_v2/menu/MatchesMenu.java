@@ -58,9 +58,9 @@ public class MatchesMenu implements IMenu {
 				break;
 			case 3:
 				logger.info("player exited matches menu");
-				break;
+				return;
 			default:
-				System.out.println("Invalid option...Redirecting to Main Menu");
+				System.out.println("Invalid option...try again");
 			}
 			System.out.println(" ");
 		} while (printMatchesOption != 3);

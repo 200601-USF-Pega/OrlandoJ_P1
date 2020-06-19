@@ -11,13 +11,15 @@ import com.revature.mariokartfighter_v2.models.PlayableCharacter;
 import com.revature.mariokartfighter_v2.service.ConnectionService;
 
 public class CharacterController {
-	public static String getCharacters(HttpServletRequest req, HttpServletResponse res) {
+	private static IPlayableCharacterRepo repo = new PlayableCharacterRepoDB(new ConnectionService());
+
+	public static void getCharacters(HttpServletRequest req, HttpServletResponse res) {
 		System.out.println("getting characters");
-		IPlayableCharacterRepo repo = new PlayableCharacterRepoDB(new ConnectionService());
 		List<PlayableCharacter> allCharacters = repo.getAllCharacters();
 		
-		req.getSession().setAttribute("characters", allCharacters);
 		
-		return "character_get.html";
+		
+//		req.getSession().setAttribute("characters", allCharacters);
+//		return "character_get.html";
 	}
 }

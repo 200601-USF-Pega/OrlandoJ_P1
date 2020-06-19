@@ -141,11 +141,12 @@ public class FightMenu implements IMenu {
 				break;
 			case 4:
 				logger.info("player exited fight menu");
-				break;
+				return;
 			default:
-				System.out.println("Invalid option...Redirecting to Main Menu");
+				System.out.println("Invalid option...try again");
 			}
 		} while (fightOption != 4);
+		return;
 	}
 
 }

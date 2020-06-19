@@ -3,22 +3,11 @@ package com.revature.mariokartfighter_v2.menu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.revature.mariokartfighter_v2.dao.IItemRepo;
 import com.revature.mariokartfighter_v2.dao.IMatchRecordRepo;
-import com.revature.mariokartfighter_v2.dao.IPlayableCharacterRepo;
 import com.revature.mariokartfighter_v2.dao.IPlayerRepo;
-import com.revature.mariokartfighter_v2.dao.ItemRepoDB;
 import com.revature.mariokartfighter_v2.dao.MatchRecordRepoDB;
-import com.revature.mariokartfighter_v2.dao.PlayableCharacterRepoDB;
 import com.revature.mariokartfighter_v2.dao.PlayerRepoDB;
-import com.revature.mariokartfighter_v2.models.Bot;
-import com.revature.mariokartfighter_v2.models.Item;
-import com.revature.mariokartfighter_v2.models.PlayableCharacter;
-import com.revature.mariokartfighter_v2.models.Player;
 import com.revature.mariokartfighter_v2.service.ConnectionService;
-import com.revature.mariokartfighter_v2.service.GameService;
-import com.revature.mariokartfighter_v2.service.ItemService;
-import com.revature.mariokartfighter_v2.service.PlayableCharacterService;
 import com.revature.mariokartfighter_v2.service.PlayerService;
 import com.revature.mariokartfighter_v2.service.ValidationService;
 
@@ -27,31 +16,14 @@ public class MainMenu {
 	
 	ConnectionService connectionService;
 	
-	IPlayerRepo playerRepo;
-	IPlayableCharacterRepo characterRepo;
-	IItemRepo itemRepo;
-	IMatchRecordRepo matchRecordRepo;
-	
 	private PlayerService playerService;
 	private ValidationService validationService;
-	private GameService gameService;
 	private String currPlayerID;
 	
 	private void setUp() {
 		connectionService = new ConnectionService();
-		logger.info("created new connection service");
-		
-		playerRepo = new PlayerRepoDB(connectionService);
-		characterRepo = new PlayableCharacterRepoDB(connectionService);
-		itemRepo = new ItemRepoDB(connectionService);
-		matchRecordRepo = new MatchRecordRepoDB(connectionService);
-		logger.info("created new repo objects");
-		
-		playerService = new PlayerService(playerRepo);
+		playerService = new PlayerService(new PlayerRepoDB(connectionService));
 		validationService = new ValidationService();
-		gameService = new GameService(playerRepo, characterRepo, itemRepo,
-				matchRecordRepo);
-		logger.info("created new service objects");
 	}
 	
 	public void mainMenu() {	
@@ -140,31 +112,8 @@ public class MainMenu {
 				IMenu fightMenu = menuFactory.getMenu("fight");
 				fightMenu.start(connectionService, currPlayerID);	
 			} else if (optionNumber2 == 5)  {
-				logger.info("player entered matches menu");
-				int printMatchesOption = -1;
-				do {
-					System.out.println("---MATCHES MENU---");
-					System.out.println("[1] List All Matches");
-					System.out.println("[2] List My Matches");
-					System.out.println("[3] Back to Main Menu");
-					
-					printMatchesOption = validationService.getValidInt();
-					
-					switch (printMatchesOption) {
-					case 1:
-						gameService.printAllMatches();
-						break;
-					case 2:
-						gameService.printPlayerMatches(currPlayerID);
-						break;
-					case 3:
-						logger.info("player exited matches menu");
-						break;
-					default:
-						System.out.println("Invalid option...Redirecting to Main Menu");
-					}
-					System.out.println(" ");
-				} while (printMatchesOption != 3);
+				IMenu matchesMenu = menuFactory.getMenu("matches");
+				matchesMenu.start(connectionService, currPlayerID);
 			} else if (optionNumber2 == 0) {
 				System.out.println("Thanks for playing!");
 				logger.info("player exited game");

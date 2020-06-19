@@ -85,7 +85,7 @@ public class ItemMenu implements IMenu {
 				logger.info("player exited item menu");
 				return;
 			default:
-				System.out.println("Invalid option...Redirecting to Main Menu");
+				System.out.println("Invalid option...try again");
 			}
 			System.out.println(" ");
 		} while (itemOption != 6);
