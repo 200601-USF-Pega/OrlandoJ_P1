@@ -1,4 +1,4 @@
-import com.revature.mariokartfighter.menu.MainMenu;
+import com.revature.mariokartfighter_v2.menu.MainMenu;
 
 public class Driver {
 	public static void main(String[] args) {
