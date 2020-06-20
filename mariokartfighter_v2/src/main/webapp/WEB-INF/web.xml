@@ -8,13 +8,6 @@
   	<welcome-file>index.html</welcome-file>
   </welcome-file-list>
   
-  <servlet>
-  	<servlet-name>MainServlet</servlet-name>
-  	<servlet-class>com.revature.mariokartfighter_v2.servlets.MainServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>MainServlet</servlet-name>
-  	<url-pattern>/*</url-pattern>
-  </servlet-mapping>
+  
   
 </web-app>

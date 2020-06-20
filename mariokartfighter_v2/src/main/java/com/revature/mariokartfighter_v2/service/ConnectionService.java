@@ -12,7 +12,7 @@ public class ConnectionService {
 	
 	public ConnectionService() {
 		try {
-			FileInputStream fis = new FileInputStream("connection.prop");
+			FileInputStream fis = new FileInputStream("C:/Users/jorla/Desktop/Revature Training/MarioKartFighter_v2/mariokartfighter_v2/connection.prop");
 			Properties p = new Properties();
 			p.load(fis);
 			
