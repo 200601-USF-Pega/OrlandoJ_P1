@@ -30,4 +30,14 @@ public class CharacterController {
 //		req.getSession().setAttribute("characters", allCharacters);
 //		return "character_get.html";
 	}
+
+	public static void getCharacterInfo(HttpServletRequest req, HttpServletResponse res) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void createCharacter(HttpServletRequest req, HttpServletResponse res) {
+		// TODO Auto-generated method stub
+		
+	}
 }

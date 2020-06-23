@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="main.css">
+		<title>Mario Kart Fighter</title>
+	</head>
+	<body>
+        <div class="jumbotron jumbotron-fluid" id="top">
+            <h1 class="display-4 text-center font-weight-bold">Mario Kart Fighter</h1>
+            <h4 class="text-center">A simulated fighting game of characters and items from the Mario Universe.</h4>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+            <a class="navbar-brand" href="#top">Navigation</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li>
+                        <form class="form-inline" action="/mariokartfighter_v2/player.profile" method="get">
+                            <a class="nav-link" href="player.html">My Profile</a>
+                        </form>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="character.html">Character Menu</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="item.html">Item Menu</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="fight.html">Fight Menu</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="matches.html">Matches Menu</a>
+                    </li>
+                </ul>
+            </div>
+            <span class="welcome-text">Welcome Player _____ !</span>
+            <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
+            <form class="form-inline" action="/mariokartfighter_v2/player.logout" method="get">
+                <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
+            </form>
+        </nav>
+
+        <br><br>
+
+        <div class="container col-5 bg-light login-box">
+            <h3 class="">Welcome to Mario Kart Fighter!!!</h3>
+            <h4>Don't know where to start? Here's some tips for new players:</h4>
+            <ul>
+                <li>Check out <a href="player.html">your profile</a> to see your level, xp earned, and other stats</li>
+                <li>Go to the <a href="character.html">character</a> or <a href="item.html">item</a> menus to see what the game has to offer</li>
+                <li>Head to the <a href="fight.html">fight</a> menu to test your loadout's strength</li>
+                <li>Enter the <a href="matches.html">matches</a> menu to see what matches have been played by you or by everyone</li>
+            </ul>
+        </div>
+	</body>
+</html>
