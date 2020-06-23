@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = {"*"})
+@WebServlet(urlPatterns = {"/mariokartfighter_v2/*"})
 public class MainServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = -8220586805560750872L;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		System.out.println("going to router");
 		Router.routeTo(req, res);
 	}
 	
