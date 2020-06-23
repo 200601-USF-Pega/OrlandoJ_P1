@@ -54,6 +54,8 @@ public class Router {
 		case "/mariokartfighter_v2/fight.player":
 			GameController.fightPlayer(req, res);
 			break;
+		case "/mariokartfighter_v2/matches.get":
+			GameController.getMatches(req, res);
 		default:
 			//route to home page
 			req.getRequestDispatcher("index.html").forward(req, res);

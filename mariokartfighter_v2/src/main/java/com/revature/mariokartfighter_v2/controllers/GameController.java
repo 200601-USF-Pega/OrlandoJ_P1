@@ -20,4 +20,9 @@ public class GameController {
 		
 	}
 
+	public static void getMatches(HttpServletRequest req, HttpServletResponse res) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
