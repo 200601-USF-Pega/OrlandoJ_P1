@@ -389,4 +389,78 @@ public class PlayerRepoDB implements IPlayerRepo {
 		return new Player();
 	}
 
+	@Override
+	public List<Player> getAvailablePlayers() {
+		try {
+			//get all players that are not bots
+			PreparedStatement getPlayers = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM player WHERE playerID NOT LIKE ? AND selectedCharacterID != null AND selectedItemID != null;");
+			getPlayers.setString(1, "bot_%");
+			ResultSet playersRS = getPlayers.executeQuery();
+			
+			PreparedStatement getPlayersCharacter = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM playablecharacter WHERE characterID = ?;");
+			PreparedStatement getPlayersItem = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM item WHERE itemID = ?;");
+			
+			List<Player> retrievedPlayers = new ArrayList<Player>();
+			
+			while(playersRS.next()) {
+				getPlayersCharacter.setString(1, playersRS.getString("selectedCharacterID"));
+				ResultSet playerCharRS = getPlayersCharacter.executeQuery();
+				
+				getPlayersItem.setString(1, playersRS.getString("selectedItemID"));
+				ResultSet playerItemRS = getPlayersItem.executeQuery();
+				
+				PlayableCharacter playerCharacter = null;
+				Item playerItem = null;
+				while(playerCharRS.next()) {
+					playerCharacter = new PlayableCharacter(playersRS.getString("selectedCharacterID"), 
+						playerCharRS.getString("characterType"),
+						playerCharRS.getString("name"),	
+						playerCharRS.getInt("maxHealth"), 
+						playerCharRS.getDouble("attackStat"), 
+						playerCharRS.getDouble("defenseStat"), 
+						playerCharRS.getInt("unlockAtLevel"));
+				}
+				while(playerItemRS.next()) {
+					playerItem = new Item(playersRS.getString("selectedItemID"), 
+						playerItemRS.getString("name"), 
+						playerItemRS.getString("typeThatCanUse"), 
+						playerItemRS.getInt("unlockAtLevel"), 
+						playerItemRS.getInt("bonusToHealth"), 
+						playerItemRS.getDouble("bonusToAttack"), 
+						playerItemRS.getDouble("bonusToDefense"));
+				}
+				
+				Player newPlayer;
+				if (playerCharacter != null && playerItem != null) {
+					newPlayer = new Player(
+						playersRS.getString("playerID"),
+						playersRS.getInt("xpLevel"), playersRS.getInt("xpEarned"),
+						playersRS.getInt("numberOfWins"), playersRS.getInt("numberOfMatchesPlayed"),
+						playerCharacter, playerItem);	
+				} else if(playerCharacter != null) {
+					newPlayer = new Player(
+							playersRS.getString("playerID"),
+							playersRS.getInt("xpLevel"), playersRS.getInt("xpEarned"),
+							playersRS.getInt("numberOfWins"), playersRS.getInt("numberOfMatchesPlayed"),
+							playerCharacter, null);	
+				} else {
+					newPlayer = new Player(
+							playersRS.getString("playerID"),
+							playersRS.getInt("xpLevel"), playersRS.getInt("xpEarned"),
+							playersRS.getInt("numberOfWins"), playersRS.getInt("numberOfMatchesPlayed"),
+							null, null);	
+				}
+				retrievedPlayers.add(newPlayer);
+			}	
+			return retrievedPlayers;
+		} catch (SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return new ArrayList<Player>();
+	}
+
 }

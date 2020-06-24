@@ -19,4 +19,5 @@ public interface IPlayerRepo {
 	public Player getPlayerInfo(String playerID);
 	public void removePlayers(String name);
 	public Map<String,String> getAllPlayersWithPasswords();
+	public List<Player> getAvailablePlayers();
 }

@@ -1,4 +1,4 @@
-package com.revature.mariokartfighter_v2.controllers;
+package com.revature.mariokartfighter_v2.web;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -78,6 +78,14 @@ public class PlayerController {
 		//TODO check if item type allowed for character
 		repo.assignItemToPlayer(item, playerID);
 		return Response.status(201).build();
+	}
+	
+	@GET
+	@Path("/getavailable")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static Response getAvailableOpponenets() {
+		logger.info("getting all players available to fight");
+		return Response.ok(repo.getAvailablePlayers())).build();
 	}
 
 }

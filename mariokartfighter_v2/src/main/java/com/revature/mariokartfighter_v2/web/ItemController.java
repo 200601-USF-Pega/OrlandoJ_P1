@@ -1,4 +1,4 @@
-package com.revature.mariokartfighter_v2.controllers;
+package com.revature.mariokartfighter_v2.web;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
