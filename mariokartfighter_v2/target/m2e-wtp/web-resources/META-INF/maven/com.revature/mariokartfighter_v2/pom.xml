@@ -38,29 +38,26 @@
 	    <version>4.0.1</version>
 	    <scope>provided</scope>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/javax.servlet.jsp/jsp-api -->
 	<dependency>
-	    <groupId>javax.servlet.jsp</groupId>
-	    <artifactId>jsp-api</artifactId>
-	    <version>2.2.1-b03</version>
-	    <scope>provided</scope>
+		<groupId>org.glassfish.jersey.inject</groupId>
+		<artifactId>jersey-hk2</artifactId>
+		<version>2.31</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
 	<dependency>
-	    <groupId>javax.servlet</groupId>
-	    <artifactId>jstl</artifactId>
-	    <version>1.2</version>
+		<groupId>org.glassfish.jersey.containers</groupId>
+		<artifactId>jersey-container-servlet</artifactId>
+		<version>2.31</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish.jersey.media</groupId>
+		<artifactId>jersey-media-json-jackson</artifactId>
+		<version>2.31</version>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.logging.log4j</groupId>
 		<artifactId>log4j-api</artifactId>
 		<version>2.13.0</version>
 	</dependency>
-	<dependency>
-		<groupId>org.apache.logging.log4j</groupId>
-		<artifactId>log4j-core</artifactId>
-		<version>2.13.0</version>
-	  </dependency>
   </dependencies>
 
   <build>

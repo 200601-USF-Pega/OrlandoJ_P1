@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.mariokartfighter_v2.models.Item;
-import com.revature.mariokartfighter_v2.service.ConnectionService;
+import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class ItemRepoDB implements IItemRepo {
 	ConnectionService connectionService;

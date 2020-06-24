@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.revature.mariokartfighter_v2.dao.IPlayerRepo;
 import com.revature.mariokartfighter_v2.dao.PlayerRepoDB;
-import com.revature.mariokartfighter_v2.service.ConnectionService;
 import com.revature.mariokartfighter_v2.service.PlayerService;
+import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class PlayerController {
 	private static final Logger logger = LogManager.getLogger(PlayerController.class); 

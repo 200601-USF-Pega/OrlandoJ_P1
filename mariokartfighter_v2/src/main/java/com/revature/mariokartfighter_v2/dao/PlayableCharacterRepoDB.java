@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
-import com.revature.mariokartfighter_v2.service.ConnectionService;
+import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class PlayableCharacterRepoDB implements IPlayableCharacterRepo {
 	ConnectionService connectionService;

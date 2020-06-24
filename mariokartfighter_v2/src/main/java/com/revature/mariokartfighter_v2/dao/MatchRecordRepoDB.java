@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.mariokartfighter_v2.models.MatchRecord;
-import com.revature.mariokartfighter_v2.service.ConnectionService;
+import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class MatchRecordRepoDB implements IMatchRecordRepo {
 	ConnectionService connectionService;

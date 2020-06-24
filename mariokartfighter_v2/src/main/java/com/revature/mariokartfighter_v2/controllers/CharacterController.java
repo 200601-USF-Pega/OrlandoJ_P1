@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.revature.mariokartfighter_v2.dao.IPlayableCharacterRepo;
 import com.revature.mariokartfighter_v2.dao.PlayableCharacterRepoDB;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
-import com.revature.mariokartfighter_v2.service.ConnectionService;
+import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class CharacterController {
 	private static IPlayableCharacterRepo repo = new PlayableCharacterRepoDB(new ConnectionService());

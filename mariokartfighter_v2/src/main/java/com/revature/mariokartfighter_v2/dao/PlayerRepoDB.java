@@ -12,7 +12,7 @@ import com.revature.mariokartfighter_v2.models.Bot;
 import com.revature.mariokartfighter_v2.models.Item;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
 import com.revature.mariokartfighter_v2.models.Player;
-import com.revature.mariokartfighter_v2.service.ConnectionService;
+import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class PlayerRepoDB implements IPlayerRepo {
 	ConnectionService connectionService;
