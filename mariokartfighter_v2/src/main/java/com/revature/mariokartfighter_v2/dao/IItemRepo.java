@@ -9,4 +9,5 @@ public interface IItemRepo {
 	public List<Item> getAllItems();
 	public List<Item> getSomeItems(int level);
 	public void removeItems(String name);
+	public Item getItemInfo(String itemName);
 }

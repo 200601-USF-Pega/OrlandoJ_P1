@@ -32,6 +32,11 @@ public class PlayableCharacter implements Serializable {
 		this.unlockAtLevel = unlockAtLevel;
 	}
 
+	public PlayableCharacter() {
+		// TODO Auto-generated constructor stub
+		this.characterID = null;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

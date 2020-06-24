@@ -15,16 +15,11 @@ import com.revature.mariokartfighter_v2.models.Player;
 import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class PlayerRepoDB implements IPlayerRepo {
-	ConnectionService connectionService;
-	
-	public PlayerRepoDB(ConnectionService connectionService) {
-		this.connectionService = connectionService;
-	}
 	
 	@Override
 	public Player addPlayer(Player player, String password) {
 		try {			
-			PreparedStatement playerInsert = connectionService.getConnection().prepareStatement(
+			PreparedStatement playerInsert = ConnectionService.getConnection().prepareStatement(
 					"INSERT INTO player VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 			playerInsert.setString(1, player.getPlayerID());
 			playerInsert.setString(2, password);
@@ -58,7 +53,7 @@ public class PlayerRepoDB implements IPlayerRepo {
 	@Override
 	public Bot addBot(Bot bot) {
 		try {			
-			PreparedStatement botInsert = connectionService.getConnection().prepareStatement(
+			PreparedStatement botInsert = ConnectionService.getConnection().prepareStatement(
 					"INSERT INTO player VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 			botInsert.setString(1, bot.getBotID());
 			botInsert.setString(2, "bot_password");
@@ -92,18 +87,15 @@ public class PlayerRepoDB implements IPlayerRepo {
 	@Override
 	public List<Player> getAllPlayers() {
 		try {
-			if(this.connectionService == null) {
-				System.out.println("connection null");
-			}
 			//get all players that are not bots
-			PreparedStatement getPlayers = connectionService.getConnection().prepareStatement(
+			PreparedStatement getPlayers = ConnectionService.getConnection().prepareStatement(
 					"SELECT * FROM player WHERE playerID NOT LIKE ?;");
 			getPlayers.setString(1, "bot_%");
 			ResultSet playersRS = getPlayers.executeQuery();
 			
-			PreparedStatement getPlayersCharacter = connectionService.getConnection().prepareStatement(
+			PreparedStatement getPlayersCharacter = ConnectionService.getConnection().prepareStatement(
 					"SELECT * FROM playablecharacter WHERE characterID = ?;");
-			PreparedStatement getPlayersItem = connectionService.getConnection().prepareStatement(
+			PreparedStatement getPlayersItem = ConnectionService.getConnection().prepareStatement(
 					"SELECT * FROM item WHERE itemID = ?;");
 			
 			List<Player> retrievedPlayers = new ArrayList<Player>();
@@ -169,7 +161,7 @@ public class PlayerRepoDB implements IPlayerRepo {
 	@Override
 	public void assignCharacterToPlayer(PlayableCharacter character, String playerID) {
 		try {			
-			PreparedStatement getPlayers = connectionService.getConnection().prepareStatement(
+			PreparedStatement getPlayers = ConnectionService.getConnection().prepareStatement(
 					"UPDATE player "
 					+ "SET selectedCharacterID = ? "
 					+ "WHERE playerID = ?;");
@@ -187,7 +179,7 @@ public class PlayerRepoDB implements IPlayerRepo {
 	@Override
 	public void assignItemToPlayer(Item item, String playerID) {
 		try {			
-			PreparedStatement getPlayers = connectionService.getConnection().prepareStatement(
+			PreparedStatement getPlayers = ConnectionService.getConnection().prepareStatement(
 					"UPDATE player "
 					+ "SET selectedItemID = ? "
 					+ "WHERE playerID = ?;");
@@ -232,7 +224,7 @@ public class PlayerRepoDB implements IPlayerRepo {
 				throw new SQLException("player does not exist");
 			}
 			
-			PreparedStatement updatePlayer = connectionService.getConnection().prepareStatement(
+			PreparedStatement updatePlayer = ConnectionService.getConnection().prepareStatement(
 					"UPDATE player "
 					+ "SET xpEarned = ?, xpLevel = ?"
 					+ "WHERE playerID = ?;");
@@ -265,7 +257,7 @@ public class PlayerRepoDB implements IPlayerRepo {
 				throw new SQLException("player does not exist");
 			}
 			
-			PreparedStatement getPlayersSorted = connectionService.getConnection().prepareStatement(
+			PreparedStatement getPlayersSorted = ConnectionService.getConnection().prepareStatement(
 					"SELECT * "
 					+ "FROM player "
 					+ "WHERE playerid NOT LIKE ? "
@@ -291,7 +283,7 @@ public class PlayerRepoDB implements IPlayerRepo {
 	@Override
 	public void removePlayers(String name) {
 		try {
-			PreparedStatement removePlayers = connectionService.getConnection().prepareStatement(
+			PreparedStatement removePlayers = ConnectionService.getConnection().prepareStatement(
 					"DELETE FROM player "
 					+ "WHERE playerID LIKE ?");
 			removePlayers.setString(1, name+'%');
@@ -306,11 +298,8 @@ public class PlayerRepoDB implements IPlayerRepo {
 	@Override
 	public Map<String,String> getAllPlayersWithPasswords() {
 		try {
-			if(this.connectionService == null) {
-				System.out.println("connection null");
-			}
 			//get all players that are not bots
-			PreparedStatement getPlayers = connectionService.getConnection().prepareStatement(
+			PreparedStatement getPlayers = ConnectionService.getConnection().prepareStatement(
 					"SELECT playerID, password FROM player WHERE playerID NOT LIKE ?;");
 			getPlayers.setString(1, "bot_%");
 			ResultSet playersRS = getPlayers.executeQuery();
@@ -328,6 +317,76 @@ public class PlayerRepoDB implements IPlayerRepo {
 			e.printStackTrace();
 		}
 		return new HashMap<String,String>();
+	}
+
+	@Override
+	public Player getPlayerInfo(String playerID) {
+		try {
+			PreparedStatement getPlayer = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM player WHERE playerID = ?;");
+			getPlayer.setString(1, playerID);
+			ResultSet playersRS = getPlayer.executeQuery();
+			
+			PreparedStatement getPlayersCharacter = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM playablecharacter WHERE characterID = ?;");
+			PreparedStatement getPlayersItem = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM item WHERE itemID = ?;");
+			
+			while(playersRS.next()) {
+				getPlayersCharacter.setString(1, playersRS.getString("selectedCharacterID"));
+				ResultSet playerCharRS = getPlayersCharacter.executeQuery();
+				
+				getPlayersItem.setString(1, playersRS.getString("selectedItemID"));
+				ResultSet playerItemRS = getPlayersItem.executeQuery();
+				
+				PlayableCharacter playerCharacter = null;
+				Item playerItem = null;
+				while(playerCharRS.next()) {
+					playerCharacter = new PlayableCharacter(playersRS.getString("selectedCharacterID"), 
+						playerCharRS.getString("characterType"),
+						playerCharRS.getString("name"),	
+						playerCharRS.getInt("maxHealth"), 
+						playerCharRS.getDouble("attackStat"), 
+						playerCharRS.getDouble("defenseStat"), 
+						playerCharRS.getInt("unlockAtLevel"));
+				}
+				while(playerItemRS.next()) {
+					playerItem = new Item(playersRS.getString("selectedItemID"), 
+						playerItemRS.getString("name"), 
+						playerItemRS.getString("typeThatCanUse"), 
+						playerItemRS.getInt("unlockAtLevel"), 
+						playerItemRS.getInt("bonusToHealth"), 
+						playerItemRS.getDouble("bonusToAttack"), 
+						playerItemRS.getDouble("bonusToDefense"));
+				}
+				
+				Player newPlayer;
+				if (playerCharacter != null && playerItem != null) {
+					newPlayer = new Player(
+						playersRS.getString("playerID"),
+						playersRS.getInt("xpLevel"), playersRS.getInt("xpEarned"),
+						playersRS.getInt("numberOfWins"), playersRS.getInt("numberOfMatchesPlayed"),
+						playerCharacter, playerItem);	
+				} else if(playerCharacter != null) {
+					newPlayer = new Player(
+							playersRS.getString("playerID"),
+							playersRS.getInt("xpLevel"), playersRS.getInt("xpEarned"),
+							playersRS.getInt("numberOfWins"), playersRS.getInt("numberOfMatchesPlayed"),
+							playerCharacter, null);	
+				} else {
+					newPlayer = new Player(
+							playersRS.getString("playerID"),
+							playersRS.getInt("xpLevel"), playersRS.getInt("xpEarned"),
+							playersRS.getInt("numberOfWins"), playersRS.getInt("numberOfMatchesPlayed"),
+							null, null);	
+				}
+				return newPlayer;
+			}	
+		} catch (SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return new Player();
 	}
 
 }

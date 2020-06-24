@@ -7,15 +7,15 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.revature.mariokartfighter_v2.dao.IPlayableCharacterRepo;
+import com.revature.mariokartfighter_v2.dao.ICharacterRepo;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
 
-public class PlayableCharacterService {
+public class CharacterService {
 	ValidationService validation;
-	IPlayableCharacterRepo repo;
-	private static final Logger logger = LogManager.getLogger(PlayableCharacterService.class);
+	ICharacterRepo repo;
+	private static final Logger logger = LogManager.getLogger(CharacterService.class);
 	
-	public PlayableCharacterService (IPlayableCharacterRepo repo) {
+	public CharacterService (ICharacterRepo repo) {
 		this.repo = repo;
 		this.validation = new ValidationService();
 	}

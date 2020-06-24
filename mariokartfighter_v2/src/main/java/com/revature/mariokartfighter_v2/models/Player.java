@@ -34,6 +34,11 @@ public class Player implements Serializable {
 		this.selectedItem = selectedItem;
 	}
 
+	public Player() {
+		// TODO Auto-generated constructor stub
+		this.playerID = null;
+	}
+
 	public String getPlayerID() {
 		return playerID;
 	}

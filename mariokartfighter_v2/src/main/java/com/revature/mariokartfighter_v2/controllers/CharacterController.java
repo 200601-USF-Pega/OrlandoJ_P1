@@ -1,43 +1,47 @@
 package com.revature.mariokartfighter_v2.controllers;
 
-import java.io.IOException;
-import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.revature.mariokartfighter_v2.dao.IPlayableCharacterRepo;
-import com.revature.mariokartfighter_v2.dao.PlayableCharacterRepoDB;
+import com.revature.mariokartfighter_v2.dao.CharacterRepoDB;
+import com.revature.mariokartfighter_v2.dao.ICharacterRepo;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
-import com.revature.mariokartfighter_v2.web.ConnectionService;
 
+@Path("/character")
 public class CharacterController {
-	private static IPlayableCharacterRepo repo = new PlayableCharacterRepoDB(new ConnectionService());
-
-	public static void getCharacters(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		System.out.println("getting characters");
-		
-		List<PlayableCharacter> allCharacters = repo.getAllCharacters();
-		String html = "<html><body><h1>List of Characters:</h1>";
-		
-        for (PlayableCharacter c : allCharacters) {
-            html += "<p>" + c + "/<p>";
-        }
-        html +="</body></html>";
-        res.setContentType("text/html");
-        res.getWriter().write(html);
-		
-//		req.getSession().setAttribute("characters", allCharacters);
-//		return "character_get.html";
+	private static final Logger logger = LogManager.getLogger(CharacterController.class);
+	private static ICharacterRepo repo = new CharacterRepoDB();
+	
+	@GET
+	@Path("/get")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static Response getCharacters() {
+		logger.info("getting characters");
+		return Response.ok(repo.getAllCharacters()).build();
 	}
-
-	public static void getCharacterInfo(HttpServletRequest req, HttpServletResponse res) {
-		// TODO Auto-generated method stub
-		
+	
+	@GET
+	@Path("/getinfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static Response getCharacterInfo(String name) {
+		logger.info("getting character info");
+		return Response.ok(repo.getCharacterInfo(name)).build();
 	}
-
-	public static void createCharacter(HttpServletRequest req, HttpServletResponse res) {
-		// TODO Auto-generated method stub
-		
+	
+	@POST
+	@Path("/create")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public static Response createCharacter(PlayableCharacter character) {
+		logger.info("creating new character");
+		repo.addCharacter(character);
+		return Response.status(201).build();
 	}
 }

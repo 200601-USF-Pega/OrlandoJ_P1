@@ -10,20 +10,15 @@ import com.revature.mariokartfighter_v2.models.MatchRecord;
 import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class MatchRecordRepoDB implements IMatchRecordRepo {
-	ConnectionService connectionService;
-	
-	public MatchRecordRepoDB(ConnectionService connectionService) {
-		this.connectionService = connectionService;
-	}
 	
 	@Override
 	public MatchRecord addMatchRecord(MatchRecord match) {
 		try {			
-			PreparedStatement insertMatchRecord = connectionService.getConnection().prepareStatement(
+			PreparedStatement insertMatchRecord = ConnectionService.getConnection().prepareStatement(
 					"INSERT INTO matchRecord ("
 					+ "matchID, timeOfMatch, player1ID, player2ID, player2IsBot, winnerIsPlayer1) "
 					+ "VALUES (?, ?, ?, ?, ?, ?);");
-			PreparedStatement insertPlayerMatchRecord = connectionService.getConnection().prepareStatement(
+			PreparedStatement insertPlayerMatchRecord = ConnectionService.getConnection().prepareStatement(
 					"INSERT INTO playerMatchRecord ("
 					+ "matchID, playerID, characterID, itemID) "
 					+ "VALUES (?, ?, ?, ?)");
@@ -63,7 +58,7 @@ public class MatchRecordRepoDB implements IMatchRecordRepo {
 	@Override
 	public List<MatchRecord> getAllMatches() {
 		try {
-			PreparedStatement getMatches = connectionService.getConnection().prepareStatement(
+			PreparedStatement getMatches = ConnectionService.getConnection().prepareStatement(
 				"SELECT * "
 				+ "FROM matchRecord, playerMatchRecord "
 				+ "WHERE matchRecord.matchID = playerMatchRecord.matchID;");
@@ -110,7 +105,7 @@ public class MatchRecordRepoDB implements IMatchRecordRepo {
 	@Override
 	public List<MatchRecord> getPlayerMatches(String playerID) {
 		try {
-			PreparedStatement getSomeMatches = connectionService.getConnection().prepareStatement(
+			PreparedStatement getSomeMatches = ConnectionService.getConnection().prepareStatement(
 				"SELECT * "
 				+ "FROM matchRecord, playerMatchRecord "
 				+ "WHERE matchRecord.matchID = playerMatchRecord.matchID "

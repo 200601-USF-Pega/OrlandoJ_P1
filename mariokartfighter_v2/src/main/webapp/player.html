@@ -25,7 +25,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li>
                         <form class="form-inline" action="/mariokartfighter_v2/player/profile" method="get">
-                            <a class="nav-link" href="player.html">My Profile</a>
+                            <a class="nav-link active" href="player.html">My Profile</a>
                         </form>
                     </li>
                     <li>
@@ -51,17 +51,59 @@
             </form>
         </nav>
 
-        <br><br>
+        <br>
 
-        <div class="container col-5 bg-light login-box">
-            <h3 class="">Welcome to Mario Kart Fighter!!!</h3>
-            <h4>Don't know where to start? Here's some tips for new players:</h4>
-            <ul>
-                <li>Check out <a href="player.html">your profile</a> to see your level, xp earned, and other stats</li>
-                <li>Go to the <a href="character.html">character</a> or <a href="item.html">item</a> menus to see what the game has to offer</li>
-                <li>Head to the <a href="fight.html">fight</a> menu to test your loadout's strength</li>
-                <li>Enter the <a href="matches.html">matches</a> menu to see what matches have been played by you or by everyone</li>
-            </ul>
+        <div class="container bg-light">
+            <div class="row">
+                <div class="col">
+                    <h2>Player _____</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row border-bottom">
+                        <div class="col">
+                            <p id="player-rank">Rank: </p>
+                            <p id="player-level">Level: </p>
+                            <p id="xp-earned">XP Earned: </p>
+                            <p id="num-matches-played">Matches Played: </p>
+                            <p id="num-matches-won">Matches Won: </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4>Statistics:</h4>
+                            <div class="progress">
+                                <div class="progress-bar w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Wins</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="row">
+                        <div class="col">
+                            Selected Character:
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <img src="https://vignette.wikia.nocookie.net/nintendo/images/d/d8/New_Super_Mario_Bros._U_Deluxe_-_Mario_01.png/revision/latest?cb=20181226204245&path-prefix=en" class="img-fluid" alt="selected character image">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="row">
+                        <div class="col">
+                            Selected Item:
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <img src="https://vignette.wikia.nocookie.net/mariokart/images/b/b6/Spiny_Shell_-_Mario_Kart_Wii.png/revision/latest?cb=20170630042108" class="img-fluid" alt="selected item image">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 	</body>
 </html>

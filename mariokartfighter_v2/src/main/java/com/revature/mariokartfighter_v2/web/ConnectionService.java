@@ -16,11 +16,20 @@ public class ConnectionService {
 		}
 	}
 	
-	public Connection getConnection() {
+	public static Connection getConnection() {
 		if (connection == null) {
 			initialize();
 		}
 		return connection;
+	}
+	
+	@Override
+	public void finalize() {
+		try {
+			connection.close();
+		} catch(Exception e) {
+			
+		}
 	}
 	
 }

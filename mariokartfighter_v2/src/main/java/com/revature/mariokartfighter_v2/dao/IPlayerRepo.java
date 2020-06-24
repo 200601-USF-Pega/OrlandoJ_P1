@@ -16,6 +16,7 @@ public interface IPlayerRepo {
 	public void assignItemToPlayer(Item item, String playerID);
 	public boolean updateAfterFight(boolean wonMatch, String playerID);
 	public int getPlayerRank(String playerID);
+	public Player getPlayerInfo(String playerID);
 	public void removePlayers(String name);
 	public Map<String,String> getAllPlayersWithPasswords();
 }

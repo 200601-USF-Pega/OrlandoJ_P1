@@ -1,77 +1,83 @@
 package com.revature.mariokartfighter_v2.controllers;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.revature.mariokartfighter_v2.dao.IPlayerRepo;
 import com.revature.mariokartfighter_v2.dao.PlayerRepoDB;
+import com.revature.mariokartfighter_v2.models.Item;
+import com.revature.mariokartfighter_v2.models.PlayableCharacter;
+import com.revature.mariokartfighter_v2.models.Player;
 import com.revature.mariokartfighter_v2.service.PlayerService;
-import com.revature.mariokartfighter_v2.web.ConnectionService;
 
+@Path("/player")
 public class PlayerController {
 	private static final Logger logger = LogManager.getLogger(PlayerController.class); 
-	private static IPlayerRepo repo = new PlayerRepoDB(new ConnectionService());
+	private static IPlayerRepo repo = new PlayerRepoDB();
 	private static PlayerService playerService = new PlayerService(repo);
-
-	public static void login(HttpServletRequest req, HttpServletResponse res) {
-		System.out.println("logging in player");
-		
-		String optionNumber = req.getParameter("inlineRadioOptions");
-		if (optionNumber.equals("option1")) {
-			//new player
-			String inputtedID = req.getParameter("new_username");
-			if (inputtedID.length() > 24 || inputtedID.length() < 4) {
-				System.out.println("username wrong length");
-				//send back alert
-			} else if(playerService.checkPlayerExists(inputtedID)) {
-				System.out.println("ID already taken");
-				//send back alert
-			} else {
-				String inputtedPassword = req.getParameter("new_password");
-				if(inputtedPassword.length() < 4 || inputtedPassword.length() > 24) {
-					System.out.println("password wrong length");
-					//send back alert
-				}
-				String currPlayerID = playerService.createNewPlayer(inputtedID, inputtedPassword);
-				req.getSession().setAttribute("currPlayerID", currPlayerID);
-				logger.info("new player " + currPlayerID + " successfully created");
-			}
+	
+	@POST
+	@Path("/login")
+	public static Response login(boolean newPlayer, String username, String password) {
+		// TODO Auto-generated method stub
+		if (newPlayer) {
+			Player player = new Player(username);
+			repo.addPlayer(player, password);
+			logger.info("player " + username + " created an account");
+			return Response.ok(player).build();
 		} else {
-			//returning player
-			//find player in database
-			String inputID = req.getParameter("old_username");
-			if (playerService.checkPlayerExists(inputID)) {
-				String inputtedPassword = req.getParameter("old_password");
-				if (!playerService.checkPassword(inputID, inputtedPassword)) {
-					System.out.println("incorrect password");
-					//send back alert
-				} else {
-					req.getSession().setAttribute("currPlayerID", inputID);					
-				}
-				logger.info("player " + inputID + " successfully logged in");
+			boolean validLogin = playerService.checkPassword(username, password);
+			if(validLogin) {
+				logger.info("player " + username + " logged in");
+				return Response.ok().build();
 			} else {
-				System.out.println("ID does not exist");
-				//send back alert
+				logger.warn("incorrect login for username " + username);
+				return Response.status(401).build();	//401 = unauthorized
 			}
 		}
 	}
-
-	public static void logout(HttpServletRequest req, HttpServletResponse res) {
-		// TODO Auto-generated method stub
-		
+	
+	
+	@Path("/logout")
+	public static void logout(String username) {
+		logger.info("player " + username + " logged out");
 	}
-
-	public static void getProfile(HttpServletRequest req, HttpServletResponse res) {
+	
+	@GET
+	@Path("/profile")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static Response getProfile(String playerID) {
 		// TODO Auto-generated method stub
-		
+		logger.info("getting player info for player " + playerID);
+		return Response.ok(repo.getPlayerInfo(playerID)).build();
 	}
-
-	public static void setCharacter(HttpServletRequest req, HttpServletResponse res) {
-		// TODO Auto-generated method stub
-		
+	
+	@POST
+	@Path("/setcharacter")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public static Response setCharacter(PlayableCharacter character, String playerID) {
+		logger.info("setting character for player " + playerID);
+		repo.assignCharacterToPlayer(character, playerID);
+		//TODO check if item type still allowed
+		return Response.status(201).build();
+	}
+	
+	@POST
+	@Path("/setitem")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public static Response setitem(Item item, String playerID) {
+		logger.info("setting character for player " + playerID);
+		//TODO check if item type allowed for character
+		repo.assignItemToPlayer(item, playerID);
+		return Response.status(201).build();
 	}
 
 }

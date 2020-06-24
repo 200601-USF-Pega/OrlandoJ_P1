@@ -9,17 +9,12 @@ import java.util.List;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
 import com.revature.mariokartfighter_v2.web.ConnectionService;
 
-public class PlayableCharacterRepoDB implements IPlayableCharacterRepo {
-	ConnectionService connectionService;
-	
-	public PlayableCharacterRepoDB(ConnectionService connectionService) {
-		this.connectionService = connectionService;
-	}
+public class CharacterRepoDB implements ICharacterRepo {
 	
 	@Override
 	public PlayableCharacter addCharacter(PlayableCharacter character) {
 		try {			
-			PreparedStatement characterInsert = connectionService.getConnection().prepareStatement(
+			PreparedStatement characterInsert = ConnectionService.getConnection().prepareStatement(
 					"INSERT INTO playablecharacter VALUES (?, ?, ?, ?, ?, ?, ?)");
 			characterInsert.setString(1, character.getCharacterID());
 			characterInsert.setString(2, character.getCharacterName());
@@ -43,7 +38,7 @@ public class PlayableCharacterRepoDB implements IPlayableCharacterRepo {
 	@Override
 	public List<PlayableCharacter> getAllCharacters() {
 		try {			
-			PreparedStatement getCharacters = connectionService.getConnection().prepareStatement(
+			PreparedStatement getCharacters = ConnectionService.getConnection().prepareStatement(
 					"SELECT * FROM playablecharacter;");
 			ResultSet charactersRS = getCharacters.executeQuery();
 			
@@ -73,7 +68,7 @@ public class PlayableCharacterRepoDB implements IPlayableCharacterRepo {
 	@Override
 	public List<PlayableCharacter> getSomeCharacters(int level) {
 		try {			
-			PreparedStatement getCharacters = connectionService.getConnection().prepareStatement(
+			PreparedStatement getCharacters = ConnectionService.getConnection().prepareStatement(
 					"SELECT * FROM playablecharacter WHERE unlockAtLevel <= ?;");
 			getCharacters.setInt(1, level);
 			ResultSet charactersRS = getCharacters.executeQuery();
@@ -104,7 +99,7 @@ public class PlayableCharacterRepoDB implements IPlayableCharacterRepo {
 	@Override
 	public void removeCharacters(String name) {
 		try {
-			PreparedStatement removeCharacters = connectionService.getConnection().prepareStatement(
+			PreparedStatement removeCharacters = ConnectionService.getConnection().prepareStatement(
 					"DELETE FROM playablecharacter "
 					+ "WHERE characterID LIKE ?");
 			removeCharacters.setString(1, name+'%');
@@ -116,4 +111,30 @@ public class PlayableCharacterRepoDB implements IPlayableCharacterRepo {
 		}
 	}
 
+	@Override
+	public PlayableCharacter getCharacterInfo(String name) {
+		try {			
+			PreparedStatement getCharacters = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM playablecharacter WHERE playablecharacter.name = ?;");
+			getCharacters.setString(1, name);
+			ResultSet charactersRS = getCharacters.executeQuery();
+			
+			while(charactersRS.next()) {				
+				PlayableCharacter newCharacter = new PlayableCharacter(
+					charactersRS.getString("characterID"),
+					charactersRS.getString("characterType"),
+					charactersRS.getString("name"),
+					charactersRS.getInt("maxHealth"),
+					charactersRS.getDouble("attackStat"), 
+					charactersRS.getDouble("defenseStat"),
+					charactersRS.getInt("unlockAtLevel"));	
+							
+				return newCharacter;
+			}	
+		} catch (SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return new PlayableCharacter();
+	}
 }

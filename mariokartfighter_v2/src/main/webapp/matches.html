@@ -51,17 +51,52 @@
             </form>
         </nav>
 
-        <br><br>
+        <br>
 
-        <div class="container col-5 bg-light login-box">
-            <h3 class="">Welcome to Mario Kart Fighter!!!</h3>
-            <h4>Don't know where to start? Here's some tips for new players:</h4>
-            <ul>
-                <li>Check out <a href="player.html">your profile</a> to see your level, xp earned, and other stats</li>
-                <li>Go to the <a href="character.html">character</a> or <a href="item.html">item</a> menus to see what the game has to offer</li>
-                <li>Head to the <a href="fight.html">fight</a> menu to test your loadout's strength</li>
-                <li>Enter the <a href="matches.html">matches</a> menu to see what matches have been played by you or by everyone</li>
-            </ul>
+        <div class="container col-9 bg-light login-box">
+            <div class="row">
+                <div class="col">
+                    <form class="form-inline" action="/mariokartfighter_v2/matches/get" method="get">
+                        <button class="btn btn-outline-primary" type="button" id="refresh-button">Refresh</button>
+                        <input class="form-check-input form-control" type="checkbox" value="" id="include-locked-items">
+                        <label class="form-label" for="include-locked-items">Only My Matches</label>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table class="table" id="item-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Time of Match</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Player 1 ID</th>
+                                    <th scope="col">Player 1 Character</th>
+                                    <th scope="col">Player 1 Item</th>
+                                    <th scope="col">Player 2 ID</th>
+                                    <th scope="col">Player 2 Character</th>
+                                    <th scope="col">Player 2 Item</th>
+                                    <th scope="col">Winner ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>timestamp</td>
+                                    <td>bs001</td>
+                                    <td>blue shell</td>
+                                    <td>power</td>
+                                    <td>100</td>
+                                    <td>30.0</td>
+                                    <td>15.0</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 	</body>
 </html>

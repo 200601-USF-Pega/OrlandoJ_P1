@@ -32,6 +32,10 @@ public class Item implements Serializable {
 		this.bonusToDefense = bonusToDefense;
 	}
 
+	public Item() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

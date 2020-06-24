@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.revature.mariokartfighter_v2.dao.IItemRepo;
 import com.revature.mariokartfighter_v2.dao.IMatchRecordRepo;
-import com.revature.mariokartfighter_v2.dao.IPlayableCharacterRepo;
+import com.revature.mariokartfighter_v2.dao.ICharacterRepo;
 import com.revature.mariokartfighter_v2.dao.IPlayerRepo;
 import com.revature.mariokartfighter_v2.models.Bot;
 import com.revature.mariokartfighter_v2.models.Item;
@@ -19,12 +19,12 @@ import com.revature.mariokartfighter_v2.models.Player;
 
 public class GameService {
 	IPlayerRepo playerRepo;
-	IPlayableCharacterRepo characterRepo;
+	ICharacterRepo characterRepo;
 	IItemRepo itemRepo;
 	IMatchRecordRepo matchRecordRepo;
 	private static final Logger logger = LogManager.getLogger(GameService.class);
 	
-	public GameService (IPlayerRepo playerRepo, IPlayableCharacterRepo characterRepo, IItemRepo itemRepo,
+	public GameService (IPlayerRepo playerRepo, ICharacterRepo characterRepo, IItemRepo itemRepo,
 			IMatchRecordRepo matchRecordRepo) {
 		this.playerRepo = playerRepo;
 		this.characterRepo = characterRepo;

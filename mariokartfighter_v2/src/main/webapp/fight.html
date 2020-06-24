@@ -35,7 +35,7 @@
                         <a class="nav-link" href="item.html">Item Menu</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="fight.html">Fight Menu</a>
+                        <a class="nav-link active" href="fight.html">Fight Menu</a>
                     </li>
                     <li>
                         <form class="form-inline" action="/mariokartfighter_v2/matches/get" method="get">
@@ -45,23 +45,28 @@
                 </ul>
             </div>
             <span class="welcome-text">Welcome Player _____ !</span>
-            <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
+            <a class="btn btn-outline-secondary logout" role="button"  href="mainMenu.html">Return to Main Menu</a>
             <form class="form-inline" action="/mariokartfighter_v2/player/logout" method="get">
                 <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
             </form>
         </nav>
 
-        <br><br>
+        <br>
 
-        <div class="container col-5 bg-light login-box">
-            <h3 class="">Welcome to Mario Kart Fighter!!!</h3>
-            <h4>Don't know where to start? Here's some tips for new players:</h4>
-            <ul>
-                <li>Check out <a href="player.html">your profile</a> to see your level, xp earned, and other stats</li>
-                <li>Go to the <a href="character.html">character</a> or <a href="item.html">item</a> menus to see what the game has to offer</li>
-                <li>Head to the <a href="fight.html">fight</a> menu to test your loadout's strength</li>
-                <li>Enter the <a href="matches.html">matches</a> menu to see what matches have been played by you or by everyone</li>
-            </ul>
+        <div class="container col-9 bg-light login-box">
+            <div class="row">
+                <div class="col-2 border-right">
+                    <form class="form-button" action="/mariokartfighter_v2/fight/bot" method="get">
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="fight_bot.html">Fight a Bot</a>
+                    </form>
+                    <form class="form-button" action="/mariokartfighter_v2/fight/random" method="get" >
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="fight_random.html">Fight a Random Player</a>
+                    </form>
+                    <form class="form-button" action="/mariokartfighter_v2/fight/otherplayer" method="get">
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="fight_player.html">Choose an Opponent</a>
+                    </form>
+                </div>
+            </div>
         </div>
 	</body>
 </html>

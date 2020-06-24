@@ -10,16 +10,11 @@ import com.revature.mariokartfighter_v2.models.Item;
 import com.revature.mariokartfighter_v2.web.ConnectionService;
 
 public class ItemRepoDB implements IItemRepo {
-	ConnectionService connectionService;
-	
-	public ItemRepoDB(ConnectionService connectionService) {
-		this.connectionService = connectionService;
-	}
 	
 	@Override
 	public Item addItem(Item item) {
 		try {			
-			PreparedStatement itemInsert = connectionService.getConnection().prepareStatement(
+			PreparedStatement itemInsert = ConnectionService.getConnection().prepareStatement(
 					"INSERT INTO item VALUES (?, ?, ?, ?, ?, ?, ?)");
 			itemInsert.setString(1, item.getItemID());
 			itemInsert.setString(2, item.getItemName());
@@ -43,7 +38,7 @@ public class ItemRepoDB implements IItemRepo {
 	@Override
 	public List<Item> getAllItems() {
 		try {			
-			PreparedStatement getItems = connectionService.getConnection().prepareStatement(
+			PreparedStatement getItems = ConnectionService.getConnection().prepareStatement(
 					"SELECT * FROM item;");
 			ResultSet itemsRS = getItems.executeQuery();
 			
@@ -72,7 +67,7 @@ public class ItemRepoDB implements IItemRepo {
 	@Override
 	public List<Item> getSomeItems(int level) {
 		try {			
-			PreparedStatement getItems = connectionService.getConnection().prepareStatement(
+			PreparedStatement getItems = ConnectionService.getConnection().prepareStatement(
 					"SELECT * FROM item WHERE unlockAtLevel <= ?;");
 			getItems.setInt(1, level);
 			
@@ -103,7 +98,7 @@ public class ItemRepoDB implements IItemRepo {
 	@Override
 	public void removeItems(String name) {
 		try {
-			PreparedStatement removeItems = connectionService.getConnection().prepareStatement(
+			PreparedStatement removeItems = ConnectionService.getConnection().prepareStatement(
 					"DELETE FROM item "
 					+ "WHERE itemID LIKE ?");
 			removeItems.setString(1, name+'%');
@@ -113,6 +108,33 @@ public class ItemRepoDB implements IItemRepo {
 			System.out.println("Exception: " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Item getItemInfo(String itemName) {
+		try {			
+			PreparedStatement getItem = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM item WHERE name = ?;");
+			getItem.setString(1, itemName);
+			ResultSet itemsRS = getItem.executeQuery();
+			
+			while(itemsRS.next()) {				
+				Item newItem = new Item(
+					itemsRS.getString("itemID"),
+					itemsRS.getString("name"),
+					itemsRS.getString("typeThatCanUse"),
+					itemsRS.getInt("unlockAtLevel"),
+					itemsRS.getInt("bonusToHealth"),
+					itemsRS.getDouble("bonusToAttack"), 
+					itemsRS.getDouble("bonusToDefense"));	
+				
+				return newItem;
+			}	
+		} catch (SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return new Item();
 	}
 
 }
