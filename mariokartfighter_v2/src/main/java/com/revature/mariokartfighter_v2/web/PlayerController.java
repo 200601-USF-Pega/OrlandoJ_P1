@@ -18,74 +18,74 @@ import com.revature.mariokartfighter_v2.models.PlayableCharacter;
 import com.revature.mariokartfighter_v2.models.Player;
 import com.revature.mariokartfighter_v2.service.PlayerService;
 
-@Path("/player")
+//@Path("/player")
 public class PlayerController {
 	private static final Logger logger = LogManager.getLogger(PlayerController.class); 
 	private static IPlayerRepo repo = new PlayerRepoDB();
 	private static PlayerService playerService = new PlayerService(repo);
 	
-	@POST
-	@Path("/login")
-	public static Response login(boolean newPlayer, String username, String password) {
-		// TODO Auto-generated method stub
-		if (newPlayer) {
-			Player player = new Player(username);
-			repo.addPlayer(player, password);
-			logger.info("player " + username + " created an account");
-			return Response.ok(player).build();
-		} else {
-			boolean validLogin = playerService.checkPassword(username, password);
-			if(validLogin) {
-				logger.info("player " + username + " logged in");
-				return Response.ok().build();
-			} else {
-				logger.warn("incorrect login for username " + username);
-				return Response.status(401).build();	//401 = unauthorized
-			}
-		}
-	}
-	
-	
-	@Path("/logout")
-	public static void logout(String username) {
-		logger.info("player " + username + " logged out");
-	}
-	
-	@GET
-	@Path("/profile")
-	@Produces(MediaType.APPLICATION_JSON)
-	public static Response getProfile(String playerID) {
-		// TODO Auto-generated method stub
-		logger.info("getting player info for player " + playerID);
-		return Response.ok(repo.getPlayerInfo(playerID)).build();
-	}
-	
-	@POST
-	@Path("/setcharacter")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public static Response setCharacter(PlayableCharacter character, String playerID) {
-		logger.info("setting character for player " + playerID);
-		repo.assignCharacterToPlayer(character, playerID);
-		//TODO check if item type still allowed
-		return Response.status(201).build();
-	}
-	
-	@POST
-	@Path("/setitem")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public static Response setitem(Item item, String playerID) {
-		logger.info("setting character for player " + playerID);
-		//TODO check if item type allowed for character
-		repo.assignItemToPlayer(item, playerID);
-		return Response.status(201).build();
-	}
-	
-	@GET
-	@Path("/getavailable")
-	@Produces(MediaType.APPLICATION_JSON)
-	public static Response getAvailableOpponenets() {
-		logger.info("getting all players available to fight");
-		return Response.ok(repo.getAvailablePlayers())).build();
-	}
+//	@POST
+//	@Path("/login")
+//	public static Response login(boolean newPlayer, String username, String password) {
+//		// TODO Auto-generated method stub
+//		if (newPlayer) {
+//			Player player = new Player(username);
+//			repo.addPlayer(player, password);
+//			logger.info("player " + username + " created an account");
+//			return Response.ok(player).build();
+//		} else {
+//			boolean validLogin = playerService.checkPassword(username, password);
+//			if(validLogin) {
+//				logger.info("player " + username + " logged in");
+//				return Response.ok().build();
+//			} else {
+//				logger.warn("incorrect login for username " + username);
+//				return Response.status(401).build();	//401 = unauthorized
+//			}
+//		}
+//	}
+//	
+//	
+//	@Path("/logout")
+//	public static void logout(String username) {
+//		logger.info("player " + username + " logged out");
+//	}
+//	
+//	@GET
+//	@Path("/profile")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public static Response getProfile(String playerID) {
+//		// TODO Auto-generated method stub
+//		logger.info("getting player info for player " + playerID);
+//		return Response.ok(repo.getPlayerInfo(playerID)).build();
+//	}
+//	
+//	@POST
+//	@Path("/setcharacter")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public static Response setCharacter(PlayableCharacter character, String playerID) {
+//		logger.info("setting character for player " + playerID);
+//		repo.assignCharacterToPlayer(character, playerID);
+//		//TODO check if item type still allowed
+//		return Response.status(201).build();
+//	}
+//	
+//	@POST
+//	@Path("/setitem")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public static Response setitem(Item item, String playerID) {
+//		logger.info("setting character for player " + playerID);
+//		//TODO check if item type allowed for character
+//		repo.assignItemToPlayer(item, playerID);
+//		return Response.status(201).build();
+//	}
+//	
+//	@GET
+//	@Path("/getavailable")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public static Response getAvailableOpponenets() {
+//		logger.info("getting all players available to fight");
+//		return Response.ok(repo.getAvailablePlayers())).build();
+//	}
 
 }

@@ -15,33 +15,33 @@ import com.revature.mariokartfighter_v2.dao.CharacterRepoDB;
 import com.revature.mariokartfighter_v2.dao.ICharacterRepo;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
 
-@Path("/character")
+//@Path("/character")
 public class CharacterController {
 	private static final Logger logger = LogManager.getLogger(CharacterController.class);
 	private static ICharacterRepo repo = new CharacterRepoDB();
 	
-	@GET
-	@Path("/get")
-	@Produces(MediaType.APPLICATION_JSON)
-	public static Response getCharacters() {
-		logger.info("getting characters");
-		return Response.ok(repo.getAllCharacters()).build();
-	}
-	
-	@GET
-	@Path("/getinfo")
-	@Produces(MediaType.APPLICATION_JSON)
-	public static Response getCharacterInfo(String name) {
-		logger.info("getting character info");
-		return Response.ok(repo.getCharacterInfo(name)).build();
-	}
-	
-	@POST
-	@Path("/create")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public static Response createCharacter(PlayableCharacter character) {
-		logger.info("creating new character");
-		repo.addCharacter(character);
-		return Response.status(201).build();
-	}
+//	@GET
+//	@Path("/get")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public static Response getCharacters() {
+//		logger.info("getting characters");
+//		return Response.ok(repo.getAllCharacters()).build();
+//	}
+//	
+//	@GET
+//	@Path("/getinfo")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public static Response getCharacterInfo(String name) {
+//		logger.info("getting character info");
+//		return Response.ok(repo.getCharacterInfo(name)).build();
+//	}
+//	
+//	@POST
+//	@Path("/create")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public static Response createCharacter(PlayableCharacter character) {
+//		logger.info("creating new character");
+//		repo.addCharacter(character);
+//		return Response.status(201).build();
+//	}
 }

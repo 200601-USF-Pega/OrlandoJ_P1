@@ -137,4 +137,22 @@ public class CharacterRepoDB implements ICharacterRepo {
 		}
 		return new PlayableCharacter();
 	}
+
+	@Override
+	public String getCharacterImageURL(String characterID) {
+		try {			
+			PreparedStatement getCharacterURL = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM characterImages WHERE characterID = ?;");
+			getCharacterURL.setString(1, characterID);
+			ResultSet charactersRS = getCharacterURL.executeQuery();
+			
+			while(charactersRS.next()) {				
+				return charactersRS.getString("url");
+			}	
+		} catch (SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return "";
+	}
 }

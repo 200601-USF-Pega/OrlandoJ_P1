@@ -13,7 +13,7 @@ public class MatchRecordRepoDB implements IMatchRecordRepo {
 	
 	@Override
 	public MatchRecord addMatchRecord(MatchRecord match) {
-		try {			
+		try {
 			PreparedStatement insertMatchRecord = ConnectionService.getConnection().prepareStatement(
 					"INSERT INTO matchRecord ("
 					+ "matchID, timeOfMatch, player1ID, player2ID, player2IsBot, winnerIsPlayer1) "

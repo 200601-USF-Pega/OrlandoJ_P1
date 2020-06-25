@@ -1,10 +1,6 @@
 package com.revature.mariokartfighter_v2.web;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,14 +13,10 @@ import com.revature.mariokartfighter_v2.dao.IPlayerRepo;
 import com.revature.mariokartfighter_v2.dao.ItemRepoDB;
 import com.revature.mariokartfighter_v2.dao.MatchRecordRepoDB;
 import com.revature.mariokartfighter_v2.dao.PlayerRepoDB;
-import com.revature.mariokartfighter_v2.models.Bot;
-import com.revature.mariokartfighter_v2.models.Item;
-import com.revature.mariokartfighter_v2.models.PlayableCharacter;
-import com.revature.mariokartfighter_v2.models.Player;
 import com.revature.mariokartfighter_v2.service.GameService;
 import com.revature.mariokartfighter_v2.service.PlayerService;
 
-@Path("/fight")
+//@Path("/fight")
 public class FightController {
 	private static final Logger logger = LogManager.getLogger(FightController.class);
 	private static IMatchRecordRepo matchRepo = new MatchRecordRepoDB();
@@ -34,42 +26,42 @@ public class FightController {
 	private static PlayerService playerService = new PlayerService(playerRepo);
 	private static GameService gameService = new GameService(playerRepo, characterRepo, itemRepo, matchRepo);
 
-	@POST
-	@Path("/bot")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public static Response fightBot(int level, String playerID) {
-		// TODO Auto-generated method stub
-		logger.info("player " + playerID + " fighting a level " + level + " bot");
-		
-		PlayableCharacter botCharacter = gameService.chooseRandomCharacter(level);
-		Item botItem = gameService.chooseRandomItem(level, botCharacter.getType());
-		Bot newBot = gameService.createNewBot(level, botCharacter, botItem);
-		
-		gameService.botFight(newBot, playerID);
-		
-		return Response.status(200).build();
-	}
-	
-	@POST
-	@Path("/random")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public static Response fightRandom(String playerID) {
-		logger.info("player " + playerID + " fighting a random player");
-		Player player1 = playerService.getPlayerObject(playerID);
-		Player player2 = playerService.chooseClosestPlayer(player1);
-		gameService.playerFight(player1, player2);
-		return Response.status(200).build();
-	}
-	
-	@POST
-	@Path("/otherplayer")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public static Response fightPlayer(String playerID, String opponentID) {
-		logger.info("player " + playerID + " fighting player " + opponentID);
-		Player player1 = playerService.getPlayerObject(playerID);
-		Player player2 = playerService.getPlayerObject(opponentID);
-		gameService.playerFight(player1, player2);
-		return Response.status(200).build();
-	}
+//	@POST
+//	@Path("/bot")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public static Response fightBot(int level, String playerID) {
+//		// TODO Auto-generated method stub
+//		logger.info("player " + playerID + " fighting a level " + level + " bot");
+//		
+//		PlayableCharacter botCharacter = gameService.chooseRandomCharacter(level);
+//		Item botItem = gameService.chooseRandomItem(level, botCharacter.getType());
+//		Bot newBot = gameService.createNewBot(level, botCharacter, botItem);
+//		
+//		gameService.botFight(newBot, playerID);
+//		
+//		return Response.status(200).build();
+//	}
+//	
+//	@POST
+//	@Path("/random")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public static Response fightRandom(String playerID) {
+//		logger.info("player " + playerID + " fighting a random player");
+//		Player player1 = playerService.getPlayerObject(playerID);O
+//		Player player2 = playerService.chooseClosestPlayer(player1);
+//		gameService.playerFight(player1, player2);
+//		return Response.status(200).build();
+//	}
+//	
+//	@POST
+//	@Path("/otherplayer")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public static Response fightPlayer(String playerID, String opponentID) {
+//		logger.info("player " + playerID + " fighting player " + opponentID);
+//		Player player1 = playerService.getPlayerObject(playerID);
+//		Player player2 = playerService.getPlayerObject(opponentID);
+//		gameService.playerFight(player1, player2);
+//		return Response.status(200).build();
+//	}
 
 }

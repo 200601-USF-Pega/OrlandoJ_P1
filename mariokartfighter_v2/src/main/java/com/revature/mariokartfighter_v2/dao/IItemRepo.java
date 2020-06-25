@@ -10,4 +10,5 @@ public interface IItemRepo {
 	public List<Item> getSomeItems(int level);
 	public void removeItems(String name);
 	public Item getItemInfo(String itemName);
+	public String getItemImageURL(String itemID);
 }

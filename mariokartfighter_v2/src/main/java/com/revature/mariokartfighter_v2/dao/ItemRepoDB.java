@@ -137,4 +137,22 @@ public class ItemRepoDB implements IItemRepo {
 		return new Item();
 	}
 
+	@Override
+	public String getItemImageURL(String itemID) {
+		try {			
+			PreparedStatement getItemURL = ConnectionService.getConnection().prepareStatement(
+					"SELECT * FROM characterImages WHERE characterID = ?;");
+			getItemURL.setString(1, itemID);
+			ResultSet itemsRS = getItemURL.executeQuery();
+			
+			while(itemsRS.next()) {				
+				return itemsRS.getString("url");
+			}	
+		} catch (SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return "";
+	}
+
 }

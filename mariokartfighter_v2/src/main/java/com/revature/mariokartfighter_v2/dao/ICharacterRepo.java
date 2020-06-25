@@ -8,6 +8,7 @@ public interface ICharacterRepo {
 	public PlayableCharacter addCharacter(PlayableCharacter character);
 	public List<PlayableCharacter> getAllCharacters();
 	public List<PlayableCharacter> getSomeCharacters(int level);
-	public PlayableCharacter getCharacterInfo(String name);
 	public void removeCharacters(String name);
+	public PlayableCharacter getCharacterInfo(String name);
+	public String getCharacterImageURL(String characterID);
 }
