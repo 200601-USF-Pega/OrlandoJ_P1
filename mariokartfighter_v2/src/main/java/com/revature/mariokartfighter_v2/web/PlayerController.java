@@ -16,6 +16,7 @@ import com.revature.mariokartfighter_v2.dao.IPlayerRepo;
 import com.revature.mariokartfighter_v2.dao.PlayerRepoDB;
 import com.revature.mariokartfighter_v2.models.Item;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
+import com.revature.mariokartfighter_v2.models.Player;
 import com.revature.mariokartfighter_v2.service.PlayerService;
 
 @Path("/player")
@@ -29,7 +30,7 @@ public class PlayerController {
 //	@Consumes(MediaType.APPLICATION_JSON)
 //	public static Response login(Player player) {
 //		// boolean newPlayer, String username, String password
-//		if (newPlayer) {
+//		if () {
 //			repo.addPlayer(player, password);
 //			logger.info("player " + username + " created an account");
 //			return Response.ok(player).build();
@@ -44,12 +45,7 @@ public class PlayerController {
 //			}
 //		}
 //	}
-//	
-	
-//	@Path("/logout")
-//	public static void logout(String username) {
-//		logger.info("player " + username + " logged out");
-//	}
+
 	
 	@GET
 	@Path("/profile/{username}")

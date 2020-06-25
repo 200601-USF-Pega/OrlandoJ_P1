@@ -4,6 +4,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
+            function setPlayerName() {
+                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username", player.playerID) + "!";
+            }
             var matches = [];
             function getAllMatches() {
                 var xhttp = new XMLHttpRequest();
@@ -30,7 +33,9 @@
                             let row = table.insertRow(table.rows.length);
 
                             let timeCell = row.insertCell(0); 
-                            timeCell.innerHTML = matches[i].timeOfMatch;
+                            var timestamp = matches[i].timeOfMatch;
+                            var date = new Date(timestamp);
+                            timeCell.innerHTML = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " " + date.getMonth() + " " + date.getDay() + ", " + date.getFullYear();
 
                             let player1IDCell = row.insertCell(1); 
                             player1IDCell.innerHTML = matches[i].player1ID;
@@ -67,7 +72,7 @@
         <link rel="stylesheet" href="main.css">
 		<title>Mario Kart Fighter</title>
 	</head>
-	<body>
+	<body  onload="setPlayerName()">
         <div class="jumbotron jumbotron-fluid" id="top">
             <h1 class="display-4 text-center font-weight-bold">Mario Kart Fighter</h1>
             <h4 class="text-center">A simulated fighting game of characters and items from the Mario Universe.</h4>
@@ -97,7 +102,7 @@
                     </li>
                 </ul>
             </div>
-            <span class="welcome-text">Welcome Player _____ !</span>
+            <span class="welcome-text" id="welcome-player">Welcome Player _____ !</span>
             <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
             <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
         </nav>

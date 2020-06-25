@@ -3,6 +3,36 @@
 	<head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function loginPlayer() {
+                let player = {};
+                if (document.querySelector("#inlineRadio1") == "on") {
+                    player.playerID = document.querySelector("#new_username").value;
+                    player.password = document.querySelector("#new_password").value;
+                } else {
+                    player.playerID = document.querySelector("#old_username").value;
+                    player.password = document.querySelector("#old_password").value;
+                }
+
+                sessionStorage.setItem("username", player.playerID);
+
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function () {
+                    if (this.readyState > 3) {
+                        document.querySelector("#new_username").value = "";
+                        document.querySelector("#old_username").value = "";
+                        document.querySelector("#new_password").value = "";
+                        document.querySelector("#old_password").value = "";
+                    }
+                }
+
+                req.open("POST",
+                    "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/player/login",
+                    true);
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify(player));
+            }
+        </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -19,50 +49,48 @@
         <br>
 
         <div class="container col-3 bg-light login-box">
-            <form action="/mariokartfighter_v2/player/login" method="get" class="needs-validation" novalidate>
-                <div class="form-group">
-                    <div class="form-check form-check new-player">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                        <label class="form-check-label" for="inlineRadio1">New Player</label>
-                        <!-- new player -->
-                        <div class="reveal-if-active new-player">
-                            <div class="form-group">
-                                <label for="new_username">Username</label>
-                                <input type="text" class="form-control" name="username" id="new_username" value="">
-                                <small id="usernameHelp" class="form-text text-muted">Must be 4-24 characters</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="new_password">Password</label>
-                                <input type="password" class="form-control" name="password" id="new_password" value="">
-                                <small id="passwordHelp" class="form-text text-muted">Must be 4-24 characters</small>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-primary" value="Create Account">
-                            </div>
+            <div class="form-group">
+                <div class="form-check form-check new-player">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <label class="form-check-label" for="inlineRadio1">New Player</label>
+                    <!-- new player -->
+                    <div class="reveal-if-active new-player">
+                        <div class="form-group">
+                            <label for="new_username">Username</label>
+                            <input type="text" class="form-control" name="username" id="new_username" value="">
+                            <small id="usernameHelp" class="form-text text-muted">Must be 4-24 characters</small>
                         </div>
-                    </div>
-                    <div class="form-check form-check returning-player">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                        <label class="form-check-label" for="inlineRadio2">Returning Player</label>
-                        <!-- returning player -->
-                        <div class="reveal-if-active returning-player">
-                            <div class="form-group">
-                                <label for="old_username">Username</label>
-                                <input type="text" class="form-control" name="username" id="old_username" value="">
-                                <small id="usernameHelp" class="form-text text-muted">Must be 4-24 characters</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="old_password">Password</label>
-                                <input type="password" class="form-control" name="password" id="old_password" value="">
-                                <small id="passwordHelp" class="form-text text-muted">Must be 4-24 characters</small>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-primary" value="Login">
-                            </div>
+                        <div class="form-group">
+                            <label for="new_password">Password</label>
+                            <input type="password" class="form-control" name="password" id="new_password" value="">
+                            <small id="passwordHelp" class="form-text text-muted">Must be 4-24 characters</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Create Account">
                         </div>
                     </div>
                 </div>
-            </form>
+                <div class="form-check form-check returning-player">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <label class="form-check-label" for="inlineRadio2">Returning Player</label>
+                    <!-- returning player -->
+                    <div class="reveal-if-active returning-player">
+                        <div class="form-group">
+                            <label for="old_username">Username</label>
+                            <input type="text" class="form-control" name="username" id="old_username" value="">
+                            <small id="usernameHelp" class="form-text text-muted">Must be 4-24 characters</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="old_password">Password</label>
+                            <input type="password" class="form-control" name="password" id="old_password" value="">
+                            <small id="passwordHelp" class="form-text text-muted">Must be 4-24 characters</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Login">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 	</body>
 </html>

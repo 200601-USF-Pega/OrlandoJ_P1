@@ -29,7 +29,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li>
-                        <a class="nav-link" href="player.html">My Profile</a>
+                        <form class="form-inline" action="/mariokartfighter_v2/player/profile" method="get">
+                            <a class="nav-link" href="player.html">My Profile</a>
+                        </form>
                     </li>
                     <li>
                         <a class="nav-link active" href="character.html">Character Menu</a>
@@ -41,13 +43,17 @@
                         <a class="nav-link" href="fight.html">Fight Menu</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="matches.html">Matches Menu</a>
+                        <form class="form-inline" action="/mariokartfighter_v2/matches/get" method="get">
+                            <a class="nav-link" href="matches.html">Matches Menu</a>
+                        </form>
                     </li>
                 </ul>
             </div>
             <span class="welcome-text" id="welcome-player">Welcome Player _____ !</span>
             <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
-            <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
+            <form class="form-inline" action="/mariokartfighter_v2/player/logout" method="get">
+                <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
+            </form>
         </nav>
 
         <br>
@@ -62,10 +68,49 @@
                         <a class="btn btn-outline-secondary btn-block" type="button" href="character_getinfo.html">Get Character Info</a>
                     </form>
                     <form class="form-button">
-                        <a class="btn btn-outline-secondary btn-block" type="button" href="character_create.html">Create A Character</a>
+                        <a class="btn btn-outline-secondary btn-block active" type="button" href="character_create.html">Create A Character</a>
+                    </form>
+                </div>
+                <div class="col">
+                    <!-- create a character -->
+                    <form action="/mariokartfighter_v2/character/create" method="post">
+                        <div class="form-group">
+                            <label for="character-name">Character Name</label>
+                            <input type="text" class="form-control" id="character-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type-select">Type</label>
+                            <select class="form-control" id="type-select" required>
+                                <option>All-Around</option>
+                                <option>Speed</option>
+                                <option>Power</option>
+                                <option>Skill</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="maxhealth">Max Health</label>
+                            <input type="text" class="form-control" id="maxhealth" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="attack-stat">Attack Stat</label>
+                            <input type="text" class="form-control" id="attack-stat" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="defense-stat">Defense Stat</label>
+                            <input type="text" class="form-control" id="defense-stat" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="character-image">Character Image URL</label>
+                            <input type="text" class="form-control" id="character-image" placeholder="Optional">
+                        </div>
+                        <button class="btn btn-primary" type="button" id="button-addon1">Create Character</button>
+                        <div class="alert alert-warning" role="alert">
+                            Your character has been created and can be unlocked at level ___.
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
+        <br>
 	</body>
 </html>

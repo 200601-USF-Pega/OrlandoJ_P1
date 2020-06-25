@@ -29,16 +29,18 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li>
-                        <a class="nav-link" href="player.html">My Profile</a>
+                        <form class="form-inline" action="/mariokartfighter_v2/player/profile" method="get">
+                            <a class="nav-link" href="player.html">My Profile</a>
+                        </form>
                     </li>
                     <li>
-                        <a class="nav-link active" href="character.html">Character Menu</a>
+                        <a class="nav-link" href="character.html">Character Menu</a>
                     </li>
                     <li>
                         <a class="nav-link" href="item.html">Item Menu</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="fight.html">Fight Menu</a>
+                        <a class="nav-link active" href="fight.html">Fight Menu</a>
                     </li>
                     <li>
                         <a class="nav-link" href="matches.html">Matches Menu</a>
@@ -47,7 +49,9 @@
             </div>
             <span class="welcome-text" id="welcome-player">Welcome Player _____ !</span>
             <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
-            <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
+            <form class="form-inline" action="/mariokartfighter_v2/player/logout" method="get">
+                <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
+            </form>
         </nav>
 
         <br>
@@ -56,14 +60,30 @@
             <div class="row">
                 <div class="col-2 border-right">
                     <form class="form-button">
-                        <a class="btn btn-outline-secondary btn-block" type="button" href="character_list.html">List Characters</a>
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="fight_bot.html">Fight a Bot</a>
                     </form>
                     <form class="form-button">
-                        <a class="btn btn-outline-secondary btn-block" type="button" href="character_getinfo.html">Get Character Info</a>
+                        <a class="btn btn-outline-secondary btn-block active" type="button" href="fight_random.html">Fight a Random Player</a>
                     </form>
                     <form class="form-button">
-                        <a class="btn btn-outline-secondary btn-block" type="button" href="character_create.html">Create A Character</a>
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="fight_player.html">Choose an Opponent</a>
                     </form>
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert alert-warning" role="alert">
+                                You need to select a <a href="character_getinfo.html" class="alert-link">character</a> and <a href="item_getinfo.html" class="alert-link">item</a> before fighting!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <form action="/mariokartfighter_v2/fight/random" method="get">
+                                <button class="btn btn-primary" type="button">Choose Random Player</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

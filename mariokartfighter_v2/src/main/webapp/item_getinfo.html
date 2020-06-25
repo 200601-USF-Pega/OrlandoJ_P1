@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function setPlayerName() {
+                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username", player.playerID) + "!";
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="main.css">
+		<title>Mario Kart Fighter</title>
+	</head>
+	<body onload="setPlayerName()">
+        <div class="jumbotron jumbotron-fluid" id="top">
+            <h1 class="display-4 text-center font-weight-bold">Mario Kart Fighter</h1>
+            <h4 class="text-center">A simulated fighting game of characters and items from the Mario Universe.</h4>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+            <a class="navbar-brand" href="#">Navigation</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li>
+                        <form class="form-inline" action="/mariokartfighter_v2/player/profile" method="get">
+                            <a class="nav-link" href="player.html">My Profile</a>
+                        </form>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="character.html">Character Menu</a>
+                    </li>
+                    <li>
+                        <a class="nav-link active" href="item.html">Item Menu</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="fight.html">Fight Menu</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="matches.html">Matches Menu</a>
+                    </li>
+                </ul>
+            </div>
+            <span class="welcome-text" id="welcome-player">Welcome Player _____ !</span>
+            <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
+            <form class="form-inline" action="/mariokartfighter_v2/player/logout" method="get">
+                <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
+            </form>
+        </nav>
+
+        <br>
+
+        <div class="container col-9 bg-light login-box">
+            <div class="row">
+                <div class="col-2 border-right">
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="item_list.html">List Items</a>
+                    </form>
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block active" type="button" href="item_getinfo.html">Get Item Info</a>
+                    </form>
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="item_create.html">Create An Item</a>
+                    </form>
+                </div>
+                <div class="col">
+                     <!-- get item info -->
+                     <div class="row">
+                        <div class="col">
+                            <form method="/mariokartfighter_v2/item/getinfo" action="get">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Item Name">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="button" id="button-addon1">Get Info</button>
+                                      </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="table-responsive">
+                                        <table class="table" id="item-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Type That Can Use</th>
+                                                    <th scope="col">Bonus To Health</th>
+                                                    <th scope="col">Bonus To Attack</th>
+                                                    <th scope="col">Boonus To Defense</th>
+                                                    <th scope="col">Unlock At Level</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>bs001</td>
+                                                    <td>blue shell</td>
+                                                    <td>power</td>
+                                                    <td>100</td>
+                                                    <td>30.0</td>
+                                                    <td>15.0</td>
+                                                    <td>1</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-primary" type="button" id="button-addon1">Set As My Character</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="alert alert-warning" role="alert">
+                                       You can't set this as your item because its type is not compatible with you character. Click <a href="character_getinfo.html" class="alert-link">here</a> to set a new character.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <img src="https://vignette.wikia.nocookie.net/mariokart/images/b/b6/Spiny_Shell_-_Mario_Kart_Wii.png/revision/latest?cb=20170630042108" class="img-fluid" alt="item info image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</body>
+</html>
