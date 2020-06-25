@@ -1,8 +1,6 @@
 package com.revature.mariokartfighter_v2.web;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -13,21 +11,20 @@ import org.apache.logging.log4j.Logger;
 
 import com.revature.mariokartfighter_v2.dao.IItemRepo;
 import com.revature.mariokartfighter_v2.dao.ItemRepoDB;
-import com.revature.mariokartfighter_v2.models.Item;
 
-//@Path("/item")
+@Path("/item")
 public class ItemController {
 	private static final Logger logger = LogManager.getLogger(ItemController.class);
 	private static IItemRepo repo = new ItemRepoDB();
 	
-//	@GET
-//	@Path("/get")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public static Response getItems() {
-//		logger.info("getting all items");
-//		return Response.ok(repo.getAllItems()).build();
-//	}
-//
+	@GET
+	@Path("/get")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static Response getItems() {
+		logger.info("getting all items");
+		return Response.ok(repo.getAllItems()).build();
+	}
+
 //	@GET
 //	@Path("/getinfo")
 //	@Produces(MediaType.APPLICATION_JSON)

@@ -4,59 +4,55 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
-            var matches = [];
-            function getAllMatches() {
+            var characters = [];
+            function getAllCharacters() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status > 199 && this.status < 300) {
-                        document.querySelectorAll("#matches-table tbody tr")
+                        document.querySelectorAll("#character-table tbody tr")
                             .forEach(
                                 function(element) {
                                     element.remove();
                                 }
                         );
 
-                        matches = JSON.parse(this.responseText);
-                        let table = document.querySelector("#matches-table tbody");
+                        characters = JSON.parse(this.responseText);
+                        let table = document.querySelector("#character-table tbody");
 
-                        for (let i = 0; i < matches.length; ++i) {
+                        for (let i = 0; i < characters.length; ++i) {
 
-                            if (document.querySelector("#only-player-matches") == "on") {
-                                if (matches[i].player1ID != playerID && matches[i].player2ID != playerID) {
+                            if (document.querySelector("#include-locked-characters") == "off") {
+                                if (characters[i].unlockAtLevel > playerLevel) {
                                     continue;
                                 }
                             }
 
                             let row = table.insertRow(table.rows.length);
 
-                            let timeCell = row.insertCell(0); 
-                            timeCell.innerHTML = matches[i].timeOfMatch;
+                            let idCell = row.insertCell(0); 
+                            idCell.innerHTML = characters[i].characterID;
 
-                            let player1IDCell = row.insertCell(1); 
-                            player1IDCell.innerHTML = matches[i].player1ID;
+                            let nameCell = row.insertCell(1); 
+                            nameCell.innerHTML = characters[i].characterName;
 
-                            let player1CharacterCell = row.insertCell(2); 
-                            player1CharacterCell.innerHTML = matches[i].player1CharacterID;
+                            let typeCell = row.insertCell(2); 
+                            typeCell.innerHTML = characters[i].type;
 
-                            let player1ItemCell = row.insertCell(3); 
-                            player1ItemCell.innerHTML = matches[i].player1ItemID;
+                            let healthCell = row.insertCell(3); 
+                            healthCell.innerHTML = characters[i].maxHealth;
 
-                            let player2IDCell = row.insertCell(4); 
-                            player2IDCell.innerHTML = matches[i].player2ID;
+                            let attackCell = row.insertCell(4); 
+                            attackCell.innerHTML = characters[i].attackStat;
 
-                            let player2CharacterCell = row.insertCell(5); 
-                            player2CharacterCell.innerHTML = matches[i].player2CharacterID;
+                            let defenseCell = row.insertCell(5); 
+                            defenseCell.innerHTML = characters[i].defenseStat;
 
-                            let player2ItemCell = row.insertCell(6); 
-                            player2ItemCell.innerHTML = matches[i].player2ItemID;
-
-                            let winnerCell = row.insertCell(7); 
-                            winnerCell.innerHTML = matches[i].winnerID;
-                            
+                            let unlockCell = row.insertCell(6); 
+                            unlockCell.innerHTML = characters[i].unlockAtLevel;
                         }
                     }
                 };
-                xhttp.open("GET", "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/matches/get", true);
+                xhttp.open("GET", "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/character/get", true);
                 xhttp.send();
             }
         </script>
@@ -65,8 +61,8 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link rel="stylesheet" href="main.css">
-		<title>Mario Kart Fighter</title>
-	</head>
+        <title>Mario Kart Fighter</title>	
+    </head>
 	<body>
         <div class="jumbotron jumbotron-fluid" id="top">
             <h1 class="display-4 text-center font-weight-bold">Mario Kart Fighter</h1>
@@ -84,7 +80,7 @@
                         <a class="nav-link" href="player.html">My Profile</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="character.html">Character Menu</a>
+                        <a class="nav-link active" href="character.html">Character Menu</a>
                     </li>
                     <li>
                         <a class="nav-link" href="item.html">Item Menu</a>
@@ -93,7 +89,7 @@
                         <a class="nav-link" href="fight.html">Fight Menu</a>
                     </li>
                     <li>
-                        <a class="nav-link active" href="matches.html">Matches Menu</a>
+                        <a class="nav-link" href="matches.html">Matches Menu</a>
                     </li>
                 </ul>
             </div>
@@ -106,28 +102,35 @@
 
         <div class="container col-9 bg-light login-box">
             <div class="row">
-                <div class="col">
-                    <form class="form-inline">
-                        <button class="btn btn-outline-primary" type="button" id="refresh-button" onClick="getAllMatches()">Refresh</button>
-                        <input class="form-check-input form-control" type="checkbox" value="" name="only-player-matches" id="only-player-matches">
-                        <label class="form-label" for="only-player-matches">Only My Matches</label>
+                <div class="col-2 border-right">
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block active" type="button" href="character_list.html">List Characters</a>
+                    </form>
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="character_getinfo.html">Get Character Info</a>
+                    </form>
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="character_create.html">Create A Character</a>
                     </form>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
+                    <!-- list all characters and unlocked characters -->
+                    <div class="form-check form-inline">
+                        <button class="btn btn-outline-primary" type="button" id="refresh-button" onClick="getAllCharacters()">Refresh</button>
+                        <input class="form-check-input" type="checkbox" value="" id="include-locked-characters">
+                        <label class="form-check-label" for="include-locked-characters">Include Locked Characters</label>
+                    </div>
                     <div class="table-responsive">
-                        <table class="table" id="matches-table">
+                        <table class="table" id="character-table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Time of Match</th>
-                                    <th scope="col">Player 1 ID</th>
-                                    <th scope="col">Player 1 Character</th>
-                                    <th scope="col">Player 1 Item</th>
-                                    <th scope="col">Player 2 ID</th>
-                                    <th scope="col">Player 2 Character</th>
-                                    <th scope="col">Player 2 Item</th>
-                                    <th scope="col">Winner ID</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Max Health</th>
+                                    <th scope="col">Attack Stat</th>
+                                    <th scope="col">Defense Stat</th>
+                                    <th scope="col">Unlock At Level</th>
                                 </tr>
                             </thead>
                             <tbody>

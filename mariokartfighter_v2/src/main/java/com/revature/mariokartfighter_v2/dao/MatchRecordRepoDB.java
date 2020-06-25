@@ -61,7 +61,8 @@ public class MatchRecordRepoDB implements IMatchRecordRepo {
 			PreparedStatement getMatches = ConnectionService.getConnection().prepareStatement(
 				"SELECT * "
 				+ "FROM matchRecord, playerMatchRecord "
-				+ "WHERE matchRecord.matchID = playerMatchRecord.matchID;");
+				+ "WHERE matchRecord.matchID = playerMatchRecord.matchID "
+				+ "ORDER BY matchRecord.timeOfMatch DESC;");
 			
 			ResultSet matchesRS = getMatches.executeQuery();
 			List<MatchRecord> allMatches = new ArrayList<MatchRecord>();

@@ -4,59 +4,55 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
-            var matches = [];
-            function getAllMatches() {
+            var items = [];
+            function getAllItems() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status > 199 && this.status < 300) {
-                        document.querySelectorAll("#matches-table tbody tr")
+                        document.querySelectorAll("#item-table tbody tr")
                             .forEach(
                                 function(element) {
                                     element.remove();
                                 }
                         );
 
-                        matches = JSON.parse(this.responseText);
-                        let table = document.querySelector("#matches-table tbody");
+                        items = JSON.parse(this.responseText);
+                        let table = document.querySelector("#item-table tbody");
 
-                        for (let i = 0; i < matches.length; ++i) {
+                        for (let i = 0; i < items.length; ++i) {
 
-                            if (document.querySelector("#only-player-matches") == "on") {
-                                if (matches[i].player1ID != playerID && matches[i].player2ID != playerID) {
+                            if (document.querySelector("#include-locked-items") == "off") {
+                                if (items[i].unlockAtLevel > playerLevel) {
                                     continue;
                                 }
                             }
 
                             let row = table.insertRow(table.rows.length);
 
-                            let timeCell = row.insertCell(0); 
-                            timeCell.innerHTML = matches[i].timeOfMatch;
+                            let idCell = row.insertCell(0); 
+                            idCell.innerHTML = items[i].itemID;
 
-                            let player1IDCell = row.insertCell(1); 
-                            player1IDCell.innerHTML = matches[i].player1ID;
+                            let nameCell = row.insertCell(1); 
+                            nameCell.innerHTML = items[i].itemName;
 
-                            let player1CharacterCell = row.insertCell(2); 
-                            player1CharacterCell.innerHTML = matches[i].player1CharacterID;
+                            let typeCell = row.insertCell(2); 
+                            typeCell.innerHTML = items[i].typeThatCanUse;
 
-                            let player1ItemCell = row.insertCell(3); 
-                            player1ItemCell.innerHTML = matches[i].player1ItemID;
+                            let healthCell = row.insertCell(3); 
+                            healthCell.innerHTML = items[i].bonusToHealth;
 
-                            let player2IDCell = row.insertCell(4); 
-                            player2IDCell.innerHTML = matches[i].player2ID;
+                            let attackCell = row.insertCell(4); 
+                            attackCell.innerHTML = items[i].bonusToAttack;
 
-                            let player2CharacterCell = row.insertCell(5); 
-                            player2CharacterCell.innerHTML = matches[i].player2CharacterID;
+                            let defenseCell = row.insertCell(5); 
+                            defenseCell.innerHTML = items[i].bonusToDefense;
 
-                            let player2ItemCell = row.insertCell(6); 
-                            player2ItemCell.innerHTML = matches[i].player2ItemID;
-
-                            let winnerCell = row.insertCell(7); 
-                            winnerCell.innerHTML = matches[i].winnerID;
-                            
+                            let unlockCell = row.insertCell(6); 
+                            unlockCell.innerHTML = items[i].unlockAtLevel;
                         }
                     }
                 };
-                xhttp.open("GET", "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/matches/get", true);
+                xhttp.open("GET", "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/item/get", true);
                 xhttp.send();
             }
         </script>
@@ -87,13 +83,13 @@
                         <a class="nav-link" href="character.html">Character Menu</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="item.html">Item Menu</a>
+                        <a class="nav-link active" href="item.html">Item Menu</a>
                     </li>
                     <li>
                         <a class="nav-link" href="fight.html">Fight Menu</a>
                     </li>
                     <li>
-                        <a class="nav-link active" href="matches.html">Matches Menu</a>
+                        <a class="nav-link" href="matches.html">Matches Menu</a>
                     </li>
                 </ul>
             </div>
@@ -106,28 +102,35 @@
 
         <div class="container col-9 bg-light login-box">
             <div class="row">
-                <div class="col">
-                    <form class="form-inline">
-                        <button class="btn btn-outline-primary" type="button" id="refresh-button" onClick="getAllMatches()">Refresh</button>
-                        <input class="form-check-input form-control" type="checkbox" value="" name="only-player-matches" id="only-player-matches">
-                        <label class="form-label" for="only-player-matches">Only My Matches</label>
+                <div class="col-2 border-right">
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block active" type="button" href="item_list.html">List Items</a>
+                    </form>
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="item_getinfo.html">Get Item Info</a>
+                    </form>
+                    <form class="form-button">
+                        <a class="btn btn-outline-secondary btn-block" type="button" href="item_create.html">Create An Item</a>
                     </form>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
+                    <!-- list all items and unlocked items -->
+                    <div class="form-check form-inline">
+                        <button class="btn btn-outline-primary" type="button" id="refresh-button" onClick="getAllItems()">Refresh</button>
+                        <input class="form-check-input" type="checkbox" value="" id="include-locked-items">
+                        <label class="form-check-label" for="include-locked-items">Include Locked Items</label>
+                    </div>
                     <div class="table-responsive">
-                        <table class="table" id="matches-table">
+                        <table class="table" id="item-table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Time of Match</th>
-                                    <th scope="col">Player 1 ID</th>
-                                    <th scope="col">Player 1 Character</th>
-                                    <th scope="col">Player 1 Item</th>
-                                    <th scope="col">Player 2 ID</th>
-                                    <th scope="col">Player 2 Character</th>
-                                    <th scope="col">Player 2 Item</th>
-                                    <th scope="col">Winner ID</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type That Can Use</th>
+                                    <th scope="col">Bonus To Health</th>
+                                    <th scope="col">Bonus To Attack</th>
+                                    <th scope="col">Bonus To Defense</th>
+                                    <th scope="col">Unlock At Level</th>
                                 </tr>
                             </thead>
                             <tbody>

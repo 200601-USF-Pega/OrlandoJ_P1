@@ -16,7 +16,7 @@ import com.revature.mariokartfighter_v2.dao.PlayerRepoDB;
 import com.revature.mariokartfighter_v2.service.GameService;
 import com.revature.mariokartfighter_v2.service.PlayerService;
 
-//@Path("/fight")
+@Path("/fight")
 public class FightController {
 	private static final Logger logger = LogManager.getLogger(FightController.class);
 	private static IMatchRecordRepo matchRepo = new MatchRecordRepoDB();
