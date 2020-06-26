@@ -11,8 +11,17 @@ public class PlayableCharacter implements Serializable {
 	private double attackStat;
 	private double defenseStat;
 	private int unlockAtLevel;
+	private String characterImage;
 	
 	public PlayableCharacter(String type, String name, int maxHealth, double attackStat, double defenseStat, int unlockAtLevel) {
+		this.type = type;
+		this.characterName = name;
+		this.maxHealth = maxHealth;
+		this.attackStat = attackStat;
+		this.defenseStat = defenseStat;
+		this.unlockAtLevel = unlockAtLevel;
+	}
+	public PlayableCharacter(String type, String name, int maxHealth, double attackStat, double defenseStat, int unlockAtLevel, String characterImage) {
 		this.characterID = "";
 		this.type = type;
 		this.characterName = name;
@@ -20,6 +29,7 @@ public class PlayableCharacter implements Serializable {
 		this.attackStat = attackStat;
 		this.defenseStat = defenseStat;
 		this.unlockAtLevel = unlockAtLevel;
+		this.characterImage = characterImage;
 	}
 	
 	public PlayableCharacter(String id, String type, String name, int maxHealth, double attackStat, double defenseStat, int unlockAtLevel) {
@@ -32,10 +42,7 @@ public class PlayableCharacter implements Serializable {
 		this.unlockAtLevel = unlockAtLevel;
 	}
 
-	public PlayableCharacter() {
-		// TODO Auto-generated constructor stub
-		this.characterID = null;
-	}
+	public PlayableCharacter() {}
 
 	@Override
 	public int hashCode() {
@@ -163,4 +170,12 @@ public class PlayableCharacter implements Serializable {
 	public void setUnlockAtLevel(int unlockAtLevel) {
 		this.unlockAtLevel = unlockAtLevel;
 	}
+	public String getCharacterImage() {
+		return characterImage;
+	}
+	public void setCharacterImage(String characterImage) {
+		this.characterImage = characterImage;
+	}
+	
+	
 }

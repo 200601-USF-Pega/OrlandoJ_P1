@@ -55,6 +55,9 @@ body {
 .alert {
     margin-top: 5px;
 }
+div > .alert-danger {
+    padding-bottom: 10px;
+}
 #refresh-button {
     margin-right: 10px;
 }

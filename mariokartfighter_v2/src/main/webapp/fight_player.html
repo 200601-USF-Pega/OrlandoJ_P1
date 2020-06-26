@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             function setPlayerName() {
-                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username", player.playerID) + "!";
+                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
             }
 
             var availablePlayers = [];
@@ -13,11 +13,6 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status > 199 && this.status < 300) {
-
-                        // if (player.selectedCharacter == null || player.selectedItem == null) {
-                        // document.querySelector("#not-set-alert").style.visibility = "visible";
-                        // }
-
                         document.querySelectorAll("#players-table tbody tr")
                             .forEach(
                                 function(element) {
@@ -71,11 +66,16 @@
                 xhttp.send();
             }
             function fightPlayer() {
+                if (sessionStorage.getItem("selectedCharacter") == null 
+                        || sessionStorage.getItem("selectedItem") == null) {
+                    document.querySelector("#not-set-alert").style.visibility = "visible";
+                    return;
+                }
+
                 let opponents = document.querySelectorAll("#opponent-options");
                 for(let i=0; i<opponents.length; ++i) {
                     console.log(opponents[i].playerID);
                 }
-
             }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

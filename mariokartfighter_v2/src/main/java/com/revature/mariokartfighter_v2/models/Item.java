@@ -11,6 +11,7 @@ public class Item implements Serializable {
 	private int bonusToHealth;
 	private double bonusToAttack;
 	private double bonusToDefense;
+	private String itemImage;
 	
 	public Item(String itemName, String typeThatCanUse, int unlockAtLevel, int bonusToHealth, double bonusToAttack, double bonusToDefense) {
 		this.itemID = "";
@@ -20,6 +21,18 @@ public class Item implements Serializable {
 		this.bonusToHealth = bonusToHealth;
 		this.bonusToAttack = bonusToAttack;
 		this.bonusToDefense = bonusToDefense;
+	}
+
+	public Item(String itemName, String typeThatCanUse, int unlockAtLevel, int bonusToHealth, double bonusToAttack, 
+			double bonusToDefense, String itemImage) {
+		this.itemID = "";
+		this.itemName = itemName;
+		this.typeThatCanUse = typeThatCanUse;
+		this.unlockAtLevel = unlockAtLevel;
+		this.bonusToHealth = bonusToHealth;
+		this.bonusToAttack = bonusToAttack;
+		this.bonusToDefense = bonusToDefense;
+		this.itemImage = itemImage;
 	}
 	
 	public Item(String id, String itemName, String typeThatCanUse, int unlockAtLevel, int bonusToHealth, double bonusToAttack, double bonusToDefense) {
@@ -161,4 +174,17 @@ public class Item implements Serializable {
 	public void setBonusToDefense(double bonusToDefense) {
 		this.bonusToDefense = bonusToDefense;
 	}
+
+	public String getItemImage() {
+		return itemImage;
+	}
+
+	public void setItemImage(String itemImage) {
+		this.itemImage = itemImage;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	
 }

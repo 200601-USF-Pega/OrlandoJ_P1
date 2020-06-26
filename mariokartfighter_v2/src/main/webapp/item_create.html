@@ -5,7 +5,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             function setPlayerName() {
-                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username", player.playerID) + "!";
+                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
+            }
+            function addItem() {
+                let item = {};
+
+                item.itemName = document.querySelector("#item-name").value;
+                item.bonusToHealth = document.querySelector("#bonus-health").value;
+                item.bonusToAttack = document.querySelector("#bonus-attack").value;
+                item.bonusToDefense = document.querySelector("#bonus-defense").value;
+                item.itemImage = document.querySelector("#item-image").value;
+
+                let dropdown = document.querySelector("#type-select");
+                item.typeThatCanUse = dropdown.options[dropdown.selectedIndex].value;
+
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function () {
+                    if (this.readyState > 3) {                        
+                        document.querySelector("#item-name").value = "";
+                        document.querySelector("#bonus-health").value = "";
+                        document.querySelector("#bonus-attack").value = "";
+                        document.querySelector("#bonus-defense").value = "";
+                        document.querySelector("#item-image").value = "";
+                    }
+                }
+
+                req.open("POST",
+                    "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/item/create",
+                    true);
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify(item));
             }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -74,15 +103,15 @@
                     <form action="/mariokartfighter_v2/item/create" method="post">
                         <div class="form-group">
                             <label for="item-name">Item Name</label>
-                            <input type="text" class="form-control" id="item-name" required>
+                            <input type="text" class="form-control" id="item-name">
                         </div>
                         <div class="form-group">
                             <label for="type-select">Type</label>
-                            <select class="form-control" id="type-select" required>
-                                <option>All-Around</option>
-                                <option>Speed</option>
-                                <option>Power</option>
-                                <option>Skill</option>
+                            <select class="form-control" id="type-select">
+                                <option value="all-around">All-Around</option>
+                                <option value="speed">Speed</option>
+                                <option value="power">Power</option>
+                                <option value="skill">Skill</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -101,7 +130,7 @@
                             <label for="item-image">Item Image URL</label>
                             <input type="text" class="form-control" id="item-image" placeholder="Optional">
                         </div>
-                        <button class="btn btn-primary" type="button" id="button-addon1">Create Item</button>
+                        <button class="btn btn-primary" type="button" id="button-addon1" onClick="addItem()">Create Item</button>
                         <div class="alert alert-warning" role="alert">
                             Your item has been created and can be unlocked at level ___.
                         </div>

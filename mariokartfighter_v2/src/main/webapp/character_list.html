@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             function setPlayerName() {
-                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username", player.playerID) + "!";
+                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
             }
 
             var characters = [];
@@ -26,7 +26,7 @@
                         for (let i = 0; i < characters.length; ++i) {
 
                             if (document.querySelector("#include-locked-characters") == "off") {
-                                if (characters[i].unlockAtLevel > playerLevel) {
+                                if (characters[i].unlockAtLevel > sessionStorage.getItem("playerLevel")) {
                                     continue;
                                 }
                             }

@@ -5,7 +5,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             function setPlayerName() {
-                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username", player.playerID) + "!";
+                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
+            }
+            function addCharacter() {
+                let character = {};
+
+                character.characterName = document.querySelector("#character-name").value;
+                character.maxHealth = document.querySelector("#max-health").value;
+                character.attackStat = document.querySelector("#attack-stat").value;
+                character.defenseStat = document.querySelector("#defense-stat").value;
+                character.characterImage = document.querySelector("#character-image").value;
+
+                let dropdown = document.querySelector("#type-select");
+                character.type = dropdown.options[dropdown.selectedIndex].value;
+
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function () {
+                    if (this.readyState > 3) {                        
+                        document.querySelector("#character-name").value = "";
+                        document.querySelector("#max-health").value = "";
+                        document.querySelector("#attack-stat").value = "";
+                        document.querySelector("#defense-stat").value = "";
+                        document.querySelector("#character-image").value = "";
+                    }
+                }
+
+                req.open("POST",
+                    "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/character/create",
+                    true);
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify(character));
             }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -81,15 +110,15 @@
                         <div class="form-group">
                             <label for="type-select">Type</label>
                             <select class="form-control" id="type-select" required>
-                                <option>All-Around</option>
-                                <option>Speed</option>
-                                <option>Power</option>
-                                <option>Skill</option>
+                                <option value="all-around">All-Around</option>
+                                <option value="speed">Speed</option>
+                                <option value="power">Power</option>
+                                <option value="skill">Skill</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="maxhealth">Max Health</label>
-                            <input type="text" class="form-control" id="maxhealth" required>
+                            <input type="text" class="form-control" id="max-health" required>
                         </div>
                         <div class="form-group">
                             <label for="attack-stat">Attack Stat</label>
@@ -103,8 +132,8 @@
                             <label for="character-image">Character Image URL</label>
                             <input type="text" class="form-control" id="character-image" placeholder="Optional">
                         </div>
-                        <button class="btn btn-primary" type="button" id="button-addon1">Create Character</button>
-                        <div class="alert alert-warning" role="alert">
+                        <button class="btn btn-primary" type="button" id="button-addon1" onClick="addCharacter()">Create Character</button>
+                        <div class="alert alert-warning" role="alert" hidden=true>
                             Your character has been created and can be unlocked at level ___.
                         </div>
                     </form>

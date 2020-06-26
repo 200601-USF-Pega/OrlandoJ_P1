@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             function setPlayerName() {
-                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username", player.playerID) + "!";
+                document.getElementById("#welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
             }
             var matches = [];
             function getAllMatches() {
@@ -23,9 +23,9 @@
                         let table = document.querySelector("#matches-table tbody");
 
                         for (let i = 0; i < matches.length; ++i) {
-
                             if (document.querySelector("#only-player-matches") == "on") {
-                                if (matches[i].player1ID != playerID && matches[i].player2ID != playerID) {
+                                if (matches[i].player1ID != sessionStorage.getItem("username") 
+                                        && matches[i].player2ID != sessionStorage.getItem("username")) {
                                     continue;
                                 }
                             }

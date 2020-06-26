@@ -1,5 +1,7 @@
 package com.revature.mariokartfighter_v2.web;
 
+import java.util.LinkedHashMap;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,27 +27,38 @@ public class PlayerController {
 	private static IPlayerRepo repo = new PlayerRepoDB();
 	private static PlayerService playerService = new PlayerService(repo);
 	
-//	@POST
-//	@Path("/login")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public static Response login(Player player) {
-//		// boolean newPlayer, String username, String password
-//		if () {
-//			repo.addPlayer(player, password);
-//			logger.info("player " + username + " created an account");
-//			return Response.ok(player).build();
-//		} else {
-//			boolean validLogin = playerService.checkPassword(username, password);
-//			if(validLogin) {
-//				logger.info("player " + username + " logged in");
-//				return Response.ok().build();
-//			} else {
-//				logger.warn("incorrect login for username " + username);
-//				return Response.status(401).build();	//401 = unauthorized
-//			}
-//		}
-//	}
-
+	@POST
+	@Path("/login")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public static Response login(LinkedHashMap<String, String> params) {
+		boolean newPlayer = params.get("newPlayer").equals("true");
+		String playerID = params.get("playerID");
+		String password = params.get("password");
+		System.out.println(playerID);
+		
+		//check if right length
+		if (playerID.length() < 4 || playerID.length() > 24 
+				|| password.length() < 4 || password.length() > 24) {
+			return Response.status(401).build();
+		}
+		
+		if (newPlayer) {
+			Player player = new Player(playerID);
+			repo.addPlayer(player, password);
+			logger.info("player " + player.getPlayerID() + " created an account");
+			return Response.ok(player).build();
+		} else {
+			boolean validLogin = playerService.checkPassword(playerID, password);
+			if(validLogin) {
+				logger.info("player " + playerID + " logged in");
+				return Response.status(201).build();
+			} else {
+				System.out.println("invalid login");
+				logger.warn("incorrect login for username " + playerID);
+				return Response.status(401).build();	//401 = unauthorized
+			}
+		}
+	}
 	
 	@GET
 	@Path("/profile/{username}")
