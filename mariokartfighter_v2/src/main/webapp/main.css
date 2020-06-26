@@ -54,6 +54,8 @@ body {
 }
 .alert {
     margin-top: 5px;
+    margin-bottom: 5px;
+    visibility: hidden;
 }
 div > .alert-danger {
     padding-bottom: 10px;

@@ -44,9 +44,13 @@ public class PlayerController {
 		
 		if (newPlayer) {
 			Player player = new Player(playerID);
-			repo.addPlayer(player, password);
+			Player addedPlayer = repo.addPlayer(player, password);
+			if (addedPlayer == null) {
+				logger.warn("user entered existing playerID");
+				return Response.status(409).build();
+			}
 			logger.info("player " + player.getPlayerID() + " created an account");
-			return Response.ok(player).build();
+			return Response.status(201).build();
 		} else {
 			boolean validLogin = playerService.checkPassword(playerID, password);
 			if(validLogin) {

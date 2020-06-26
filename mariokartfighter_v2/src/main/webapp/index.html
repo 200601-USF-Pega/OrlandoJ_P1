@@ -4,17 +4,23 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
+            function clearAlerts() {
+                document.querySelector("#login-alert").style.visibility = "hidden";
+                document.querySelector("#create-alert").style.visibility = "hidden";
+            }
             function loginPlayer() {
-                let params = {};
-                
-                if (document.querySelector("#inlineRadio1") == "on") {
+                var params = {};
+
+                if (document.getElementById("inlineRadio1").checked) {
                     params.playerID = document.querySelector("#new_username").value;
                     params.password = document.querySelector("#new_password").value;
                     params.newPlayer = "true";
+                    console.log("new player");
                 } else {
                     params.playerID = document.querySelector("#old_username").value;
                     params.password = document.querySelector("#old_password").value;
                     params.newPlayer = "false";
+                    console.log("login");
                 }
 
                 sessionStorage.setItem("username", params.playerID);
@@ -28,20 +34,32 @@
                         document.querySelector("#old_username").value = "";
                         document.querySelector("#new_password").value = "";
                         document.querySelector("#old_password").value = "";
+                        document.querySelector("#login-alert").style.visibility = "hidden";
+                        document.querySelector("#create-alert").style.visibility = "hidden";
                     }
-                    var resp = this.response;
-                    console.log(resp.status);
-                    if (resp.status == 201) {
-                    //go to mainMenu.html
-                    window.location.href = "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/mainMenu.html";
-                    } else if (resp.status == 401) {
-                        //dont log in  
-                        if (params.newPlayer == "true") {
-                            // document.querySelector("#login-alert").style.visibility = "visible";
-                            document.querySelector("#login-alert").setAttribute(hidden, false);
-                        } else {
-                            // document.querySelector("#create-alert").style.visibility = "visible";
-                            document.querySelector("#create-alert").setAttribute(hidden, false);
+                    
+                    if(this.readyState == 4) {
+                        console.log(params.newPlayer);
+                        if (this.status == 201) {
+                            //go to mainMenu.html
+                            window.location.href = "http://localhost:8080/mariokartfighter_v2/mainMenu.html";
+                        } else if (this.status == 401) {
+                            //invalid username or password
+                            if (params.newPlayer == "true") {
+                                document.querySelector("#create-alert").style.visibility = "visible";
+                                document.querySelector("#create-alert").innerHTML = "Invalid username and/or password. Please try again.";
+                                console.log("new player alert");
+                            } else {
+                                document.querySelector("#login-alert").style.visibility = "visible";     
+                                console.log("login player alert");
+                            }
+                        } else if (this.status == 409){
+                            //username exists
+                            if (params.newPlayer == "true") {
+                                document.querySelector("#create-alert").style.visibility = "visible";
+                                document.querySelector("#create-alert").innerHTML = "Username already exists.";
+                                console.log("entered existing username");
+                            }
                         }
                     }
                 };
@@ -69,9 +87,9 @@
         <br>
 
         <div class="container col-3 bg-light login-box">
-            <div class="form-group">
-                <div class="form-check form-check new-player form-group">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <div class="form-group form-row">
+                <div class="form-check new-player form-group">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onClick="clearAlerts()">
                     <label class="form-check-label" for="inlineRadio1">New Player</label>
                     <!-- new player -->
                     <div class="reveal-if-active new-player">
@@ -88,13 +106,15 @@
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" value="Create Account" onClick="loginPlayer()">
                         </div>
-                        <div class="alert alert-danger form-group" id="create-alert" role="alert" hidden=true>
-                            Invalid username and/or password. Please try again.
-                        </div>
+                    </div>
+                    <div class="form-group alert alert-danger" id="create-alert" role="alert">
+                        Invalid username and/or password. Please try again.
                     </div>
                 </div>
-                <div class="form-check form-check returning-player form-group">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+            </div>
+            <div class="form-group form-row">
+                <div class="form-check returning-player form-group">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onClick="clearAlerts()">
                     <label class="form-check-label" for="inlineRadio2">Returning Player</label>
                     <!-- returning player -->
                     <div class="reveal-if-active returning-player">
@@ -111,9 +131,9 @@
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" value="Login" onClick="loginPlayer()">
                         </div>
-                        <div class="alert alert-danger form-group" role="alert" id="login-alert" hidden=true>
-                            Invalid username and/or password. Please try again.
-                        </div>
+                    </div>
+                    <div class="alert alert-danger form-group" role="alert" id="login-alert">
+                        Invalid username and/or password. Please try again.
                     </div>
                 </div>
             </div>

@@ -45,7 +45,7 @@ public class PlayerRepoDB implements IPlayerRepo {
 			
 		} catch (SQLException e) {
 			System.out.println("Exception: " + e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return null;
 	}
