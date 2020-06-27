@@ -4,6 +4,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,11 +32,19 @@ public class ItemController {
 	}
 
 	@GET
-	@Path("/getinfo")
+	@Path("/getinfo/{itemname}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static Response getItemInfo(String itemName) {
+	public static Response getItemInfo(@PathParam("itemname") String itemName) {
 		logger.info("getting item info for " + itemName);
-		return Response.ok(repo.getItemInfo(itemName)).build();
+		Item retrievedItem = repo.getItemInfo(itemName);
+		if (retrievedItem == null) {
+			return Response.status(404).build();
+		}
+		String itemImage = repo.getItemImageURL(retrievedItem.getItemID());
+		if(itemImage != "") {
+			retrievedItem.setItemImage(itemImage);
+		}
+		return Response.ok(retrievedItem).build();
 	}
 
 	@POST

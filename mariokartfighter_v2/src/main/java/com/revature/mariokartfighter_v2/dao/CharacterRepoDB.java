@@ -145,7 +145,7 @@ public class CharacterRepoDB implements ICharacterRepo {
 			System.out.println("Exception: " + e.getMessage());
 			e.printStackTrace();
 		}
-		return new PlayableCharacter();
+		return null;
 	}
 
 	@Override

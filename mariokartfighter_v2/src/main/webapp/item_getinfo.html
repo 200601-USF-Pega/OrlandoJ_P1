@@ -7,6 +7,69 @@
             function setPlayerName() {
                 document.getElementById("welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
             }
+            function clearAlerts() {
+                document.querySelector("#no-item-alert").style.visibility = "hidden";
+                document.querySelector("#wrong-type-item-alert").style.visibility = "hidden";
+            }
+            function getItemInfo() {
+                clearAlerts();
+
+                var itemName = document.getElementById("item-name").value;
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status > 199 && this.status < 300) {
+                        document.querySelectorAll("#item-info-table tbody tr")
+                            .forEach(
+                                function(element) {
+                                    element.remove();
+                                }
+                        );
+                        
+                        if(this.status == 404) {
+                            document.querySelector("#no-item-alert").style.visibility = "visible";
+                            return;
+                        }
+
+                        items = JSON.parse(this.responseText);
+                        let table = document.querySelector("#item-info-table tbody");
+
+                        let row = table.insertRow(table.rows.length);
+
+                        let idCell = row.insertCell(0); 
+                        idCell.innerHTML = items.itemID;
+
+                        let nameCell = row.insertCell(1); 
+                        nameCell.innerHTML = items.itemName;
+
+                        let typeCell = row.insertCell(2); 
+                        typeCell.innerHTML = items.typeThatCanUse;
+
+                        let healthCell = row.insertCell(3); 
+                        healthCell.innerHTML = items.bonusToHealth;
+
+                        let attackCell = row.insertCell(4); 
+                        attackCell.innerHTML = items.bonusToAttack;
+
+                        let defenseCell = row.insertCell(5); 
+                        defenseCell.innerHTML = items.bonusToDefense;
+
+                        let unlockCell = row.insertCell(6); 
+                        unlockCell.innerHTML = items.unlockAtLevel;
+
+                        if (items.itemImage != null) {
+                            let itemImage = document.querySelector("#search-item-image");
+                            itemImage.setAttribute("src", items.itemImage);
+                        }
+                    }
+                };
+                xhttp.open("GET", "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/item/getinfo/" + itemName, true);
+                xhttp.send();
+            }
+            function setItem() {
+                clearAlerts();
+                // sessionStorage.setItem("selectedItem", items[i].itemName);
+            }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -76,9 +139,9 @@
                         <div class="col">
                             <form method="/mariokartfighter_v2/item/getinfo" action="get">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Item Name">
+                                    <input type="text" class="form-control" placeholder="Item Name" id="item-name" value="">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-primary" type="button" id="button-addon1">Get Info</button>
+                                        <button class="btn btn-outline-primary" type="button" id="button-addon1" onClick="getItemInfo()">Get Info</button>
                                       </div>
                                 </div>
                             </form>
@@ -89,7 +152,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="table-responsive">
-                                        <table class="table" id="item-table">
+                                        <table class="table" id="item-info-table">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">ID</th>
@@ -97,20 +160,12 @@
                                                     <th scope="col">Type That Can Use</th>
                                                     <th scope="col">Bonus To Health</th>
                                                     <th scope="col">Bonus To Attack</th>
-                                                    <th scope="col">Boonus To Defense</th>
+                                                    <th scope="col">Bonus To Defense</th>
                                                     <th scope="col">Unlock At Level</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>bs001</td>
-                                                    <td>blue shell</td>
-                                                    <td>power</td>
-                                                    <td>100</td>
-                                                    <td>30.0</td>
-                                                    <td>15.0</td>
-                                                    <td>1</td>
-                                                </tr>
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -118,19 +173,22 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <button class="btn btn-primary" type="button" id="button-addon1">Set As My Character</button>
+                                    <button class="btn btn-primary" type="button" id="button-addon1" onClick="setItem()">Set As My Item</button>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <div class="alert alert-warning" role="alert">
+                                    <div class="alert alert-warning" role="alert" id="wrong-type-item-alert">
                                        You can't set this as your item because its type is not compatible with you character. Click <a href="character_getinfo.html" class="alert-link">here</a> to set a new character.
+                                    </div>
+                                    <div class="form-group alert alert-danger" id="no-item-alert" role="alert">
+                                        Entered item does not exist.
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-3">
-                            <img src="https://vignette.wikia.nocookie.net/mariokart/images/b/b6/Spiny_Shell_-_Mario_Kart_Wii.png/revision/latest?cb=20170630042108" class="img-fluid" alt="item info image">
+                            <img src="https://lh3.googleusercontent.com/proxy/ZFGvlEwQPS0Gp8f_N0Jdrt1nKAhd9btcVpwc4KL_ZO6zczZRQsP9qeQfRULEPONhbISH_g3dc3Q2eH54LKDzvQZxWWZYScJ_w8k6STvNXINq90Sx5j9IjFMnrXg9SA" class="img-fluid" alt="item info image" id="search-item-image">
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,11 +32,15 @@ public class CharacterController {
 	}
 	
 	@GET
-	@Path("/getinfo")
+	@Path("/getinfo/{charactername}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static Response getCharacterInfo(String name) {
+	public static Response getCharacterInfo(@PathParam("charactername") String name) {
 		logger.info("getting character info");
-		return Response.ok(repo.getCharacterInfo(name)).build();
+		PlayableCharacter retrievedCharacter = repo.getCharacterInfo(name);
+		if(retrievedCharacter == null) {
+			return Response.status(404).build();
+		}
+		return Response.ok(retrievedCharacter).build();
 	}
 	
 	@POST

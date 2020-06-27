@@ -144,7 +144,7 @@ public class ItemRepoDB implements IItemRepo {
 			System.out.println("Exception: " + e.getMessage());
 			e.printStackTrace();
 		}
-		return new Item();
+		return null;
 	}
 
 	@Override

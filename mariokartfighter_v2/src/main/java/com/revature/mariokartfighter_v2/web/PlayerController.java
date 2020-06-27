@@ -38,6 +38,7 @@ public class PlayerController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response login(LinkedHashMap<String, String> params) {
+		logger.error("logging in");
 		boolean newPlayer = params.get("newPlayer").equals("true");
 		String playerID = params.get("playerID");
 		String password = params.get("password");

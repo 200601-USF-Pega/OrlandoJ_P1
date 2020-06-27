@@ -7,6 +7,52 @@
             function setPlayerName() {
                 document.getElementById("welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
             }
+            function getCharacterInfo() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status > 199 && this.status < 300) {
+                        document.querySelectorAll("#character-info-table tbody tr")
+                            .forEach(
+                                function(element) {
+                                    element.remove();
+                                }
+                        );
+
+                        characters = JSON.parse(this.responseText);
+                        let table = document.querySelector("#character-info-table tbody");
+                        
+                        for (let i = 0; i < characters.length; ++i) {
+                            let row = table.insertRow(table.rows.length);
+
+                            let idCell = row.insertCell(0); 
+                            idCell.innerHTML = characters[i].characterID;
+
+                            let nameCell = row.insertCell(1); 
+                            nameCell.innerHTML = characters[i].characterName;
+
+                            let typeCell = row.insertCell(2); 
+                            typeCell.innerHTML = characters[i].type;
+
+                            let healthCell = row.insertCell(3); 
+                            healthCell.innerHTML = characters[i].maxHealth;
+
+                            let attackCell = row.insertCell(4); 
+                            attackCell.innerHTML = characters[i].attackStat;
+
+                            let defenseCell = row.insertCell(5); 
+                            defenseCell.innerHTML = characters[i].defenseStat;
+
+                            let unlockCell = row.insertCell(6); 
+                            unlockCell.innerHTML = characters[i].unlockAtLevel;
+                        }
+                    }
+                };
+                xhttp.open("GET", "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/character/getinfo", true);
+                xhttp.send();
+            }
+            function setCharacter() {
+
+            }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -79,7 +125,7 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Character Name" value="" id="character-name-input">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-primary" type="button" id="button-addon1">Get Info</button>
+                                        <button class="btn btn-outline-primary" type="button" id="button-addon1" onClick="getCharacterInfo()">Get Info</button>
                                       </div>
                                 </div>
                             </form>
@@ -90,7 +136,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="table-responsive">
-                                        <table class="table" id="character-table">
+                                        <table class="table" id="character-info-table">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">ID</th>
@@ -120,7 +166,7 @@
                             <div class="row">
                                 <div class="col">
                                     <form action="/mariokartfighter_v2/player/setcharacter" method="post">
-                                        <button class="btn btn-primary" type="button" id="button-addon1">Set As My Character</button>
+                                        <button class="btn btn-primary" type="button" id="button-addon1" onClick="setCharacter()">Set As My Character</button>
                                     </form>
                                 </div>
                             </div>
