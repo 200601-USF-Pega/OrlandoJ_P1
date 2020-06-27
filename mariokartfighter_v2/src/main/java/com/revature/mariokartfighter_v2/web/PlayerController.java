@@ -41,7 +41,6 @@ public class PlayerController {
 		boolean newPlayer = params.get("newPlayer").equals("true");
 		String playerID = params.get("playerID");
 		String password = params.get("password");
-		System.out.println(playerID);
 		
 		//check if right length
 		if (playerID.length() < 4 || playerID.length() > 24 
@@ -65,7 +64,6 @@ public class PlayerController {
 				logger.info("player " + playerID + " logged in");
 				return Response.ok(player).build();
 			} else {
-//				System.out.println("invalid login");
 				logger.warn("incorrect login for username " + playerID);
 				return Response.status(401).build();	//401 = unauthorized
 			}
@@ -78,7 +76,6 @@ public class PlayerController {
 	public static Response getProfile(@PathParam("username") String playerID) {
 		logger.info("getting player info for player " + playerID);
 		
-		System.out.println(playerID);
 		Player requestedPlayer = repo.getPlayerInfo(playerID);
 		PlayableCharacter playerCharacter = requestedPlayer.getSelectedCharacter();
 		Item playerItem = requestedPlayer.getSelectedItem();

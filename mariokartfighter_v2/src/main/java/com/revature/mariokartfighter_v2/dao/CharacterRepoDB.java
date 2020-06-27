@@ -26,6 +26,16 @@ public class CharacterRepoDB implements ICharacterRepo {
 			
 			characterInsert.executeUpdate();
 			
+			//check if image url exists
+			if (character.getCharacterImage() != null) {
+				PreparedStatement characterImageInsert = ConnectionService.getConnection().prepareStatement(
+						"INSERT INTO characterImages VALUES (?, ?);");
+				characterImageInsert.setString(1, character.getCharacterID());
+				characterImageInsert.setString(2, character.getCharacterImage());
+				
+				characterImageInsert.executeUpdate();
+			}
+			
 			return character;
 			
 		} catch (SQLException e) {

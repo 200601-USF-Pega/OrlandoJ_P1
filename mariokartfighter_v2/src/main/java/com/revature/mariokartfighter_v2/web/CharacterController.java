@@ -44,6 +44,7 @@ public class CharacterController {
 	public static Response createCharacter(PlayableCharacter character) {
 		logger.info("creating new character");
 		character.setCharacterID(charService.generateCharacterID());
+		character.setUnlockAtLevel((int)(character.getMaxHealth()%10 + character.getAttackStat() + character.getDefenseStat()/3));
 		repo.addCharacter(character);
 		return Response.status(201).build();
 	}

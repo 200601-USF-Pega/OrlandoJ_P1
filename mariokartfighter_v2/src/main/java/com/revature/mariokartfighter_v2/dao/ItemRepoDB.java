@@ -26,6 +26,16 @@ public class ItemRepoDB implements IItemRepo {
 			
 			itemInsert.executeUpdate();
 			
+			//check if image url exists
+			if (item.getItemImage() != null) {
+				PreparedStatement itemImageInsert = ConnectionService.getConnection().prepareStatement(
+						"INSERT INTO itemImages VALUES (?, ?);");
+				itemImageInsert.setString(1, item.getItemID());
+				itemImageInsert.setString(2, item.getItemImage());
+				
+				itemImageInsert.executeUpdate();
+			}
+			
 			return item;
 			
 		} catch (SQLException e) {
