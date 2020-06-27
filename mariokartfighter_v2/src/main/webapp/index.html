@@ -24,8 +24,6 @@
                 }
 
                 sessionStorage.setItem("username", params.playerID);
-                sessionStorage.setItem("selectedCharacter", null);
-                sessionStorage.setItem("selectedItem", null);
 
                 var req = new XMLHttpRequest();
                 req.onreadystatechange = function () {
@@ -43,6 +41,16 @@
                         if (this.status == 200) {
                             player = JSON.parse(this.responseText);
                             sessionStorage.setItem("playerLevel", player.level);
+                            if (player.selectedCharacter != null) {
+                                sessionStorage.setItem("selectedCharacter", player.selectedCharacter.characterID);
+                            } else {
+                                sessionStorage.setItem("selectedCharacter", null);
+                            }
+                            if (player.selectedItem != null) {
+                                sessionStorage.setItem("selectedItem", player.selectedItem.itemID);
+                            } else {
+                                sessionStorage.setItem("selectedItem", null);
+                            }
                             //go to mainMenu.html
                             window.location.href = "http://localhost:8080/mariokartfighter_v2/mainMenu.html";
                         } else if (this.status == 401) {

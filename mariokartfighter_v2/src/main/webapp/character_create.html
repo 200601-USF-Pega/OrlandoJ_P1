@@ -67,9 +67,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li>
-                        <form class="form-inline" action="/mariokartfighter_v2/player/profile" method="get">
-                            <a class="nav-link" href="player.html">My Profile</a>
-                        </form>
+                        <a class="nav-link" href="player.html">My Profile</a>
                     </li>
                     <li>
                         <a class="nav-link active" href="character.html">Character Menu</a>
@@ -81,17 +79,13 @@
                         <a class="nav-link" href="fight.html">Fight Menu</a>
                     </li>
                     <li>
-                        <form class="form-inline" action="/mariokartfighter_v2/matches/get" method="get">
-                            <a class="nav-link" href="matches.html">Matches Menu</a>
-                        </form>
+                        <a class="nav-link" href="matches.html">Matches Menu</a>
                     </li>
                 </ul>
             </div>
             <span class="welcome-text" id="welcome-player">Welcome Player _____ !</span>
             <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
-            <form class="form-inline" action="/mariokartfighter_v2/player/logout" method="get">
-                <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
-            </form>
+            <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
         </nav>
 
         <br>
@@ -142,7 +136,7 @@
                             <input type="text" class="form-control" id="character-image" placeholder="Optional">
                         </div>
                         <button class="btn btn-primary" type="button" id="button-addon1" onClick="addCharacter()">Create Character</button>
-                        <div class="alert alert-warning" role="alert" id="character-created-alert">
+                        <div class="alert alert-success" role="alert" id="character-created-alert">
                             Your character has been created.
                         </div>
                     </form>

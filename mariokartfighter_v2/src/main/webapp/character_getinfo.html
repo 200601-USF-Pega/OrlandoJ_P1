@@ -10,6 +10,7 @@
             function clearAlerts() {
                 document.querySelector("#no-character-alert").style.visibility = "hidden";
                 document.querySelector("#wrong-type-character-alert").style.visibility = "hidden";
+                document.querySelector("#character-set-alert").style.visibility = "hidden";
             }
             function getCharacterInfo() {
                 clearAlerts();
@@ -66,7 +67,38 @@
                 xhttp.send();
             }
             function setCharacter() {
+                clearAlerts();
 
+                var character = {};
+
+                character.characterName = document.querySelector("#character-name").value;
+
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function () {
+                    if (this.readyState > 3) {                        
+                        document.querySelector("#character-name").value = "";
+                    }
+
+                    if (this.readyState == 4) {
+                        if(this.status == 404){
+                            document.querySelector("#no-character-alert").style.visibility = "visible";
+                        } else if (this.status == 409 ) {
+                            document.querySelector("#character-set-alert").style.visibility = "visible";
+                            document.querySelector("#wrong-type-character-alert").style.visibility = "visible";
+                            sessionStorage.setItem("selectedCharacter", character.characterName);
+                            sessionStorage.setItem("selectedItem", null);
+                        } else {
+                            sessionStorage.setItem("selectedCharacter", character.characterName);
+                            document.querySelector("#character-set-alert").style.visibility = "visible";
+                        }
+                    }
+                }
+
+                req.open("POST",
+                    "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/player/setcharacter/" + sessionStorage.getItem("username"),
+                    true);
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify(character));
             }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -90,9 +122,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li>
-                        <form class="form-inline" action="/mariokartfighter_v2/player/profile" method="get">
-                            <a class="nav-link" href="player.html">My Profile</a>
-                        </form>
+                        <a class="nav-link" href="player.html">My Profile</a>
                     </li>
                     <li>
                         <a class="nav-link active" href="character.html">Character Menu</a>
@@ -104,17 +134,13 @@
                         <a class="nav-link" href="fight.html">Fight Menu</a>
                     </li>
                     <li>
-                        <form class="form-inline" action="/mariokartfighter_v2/matches/get" method="get">
-                            <a class="nav-link" href="matches.html">Matches Menu</a>
-                        </form>
+                        <a class="nav-link" href="matches.html">Matches Menu</a>
                     </li>
                 </ul>
             </div>
             <span class="welcome-text" id="welcome-player">Welcome Player _____ !</span>
             <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
-            <form class="form-inline" action="/mariokartfighter_v2/player/logout" method="get">
-                <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
-            </form>
+            <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
         </nav>
 
         <br>
@@ -136,7 +162,7 @@
                     <!-- get character info -->
                     <div class="row">
                         <div class="col">
-                            <form action="/mariokartfighter_v2/character/getinfo" method="get">
+                            <form>
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Character Name" value="" id="character-name">
                                     <div class="input-group-append">
@@ -172,13 +198,16 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <form action="/mariokartfighter_v2/player/setcharacter" method="post">
+                                    <form>
                                         <button class="btn btn-primary" type="button" id="button-addon1" onClick="setCharacter()">Set As My Character</button>
                                     </form>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
+                                    <div class="form-group alert alert-success" id="character-set-alert" role="alert">
+                                        Your character has been set. You can view it in <a href="player.html">your profile</a>.
+                                    </div>
                                     <div class="alert alert-warning" role="alert" id="wrong-type-character-alert">
                                         Your selected item has been removed because its type is not compatible with this character's type! Click <a href="item_getinfo.html" class="alert-link">here</a> to set a new item.
                                     </div>

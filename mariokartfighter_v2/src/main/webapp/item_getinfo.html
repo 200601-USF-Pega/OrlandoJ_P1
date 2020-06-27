@@ -10,6 +10,7 @@
             function clearAlerts() {
                 document.querySelector("#no-item-alert").style.visibility = "hidden";
                 document.querySelector("#wrong-type-item-alert").style.visibility = "hidden";
+                document.querySelector("#item-set-alert").style.visibility = "hidden";
             }
             function getItemInfo() {
                 clearAlerts();
@@ -69,7 +70,34 @@
             }
             function setItem() {
                 clearAlerts();
-                // sessionStorage.setItem("selectedItem", items[i].itemName);
+
+                var item = {};
+
+                item.itemName = document.querySelector("#item-name").value;
+
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function () {
+                    if (this.readyState > 3) {                        
+                        document.querySelector("#item-name").value = "";
+                    }
+
+                    if (this.readyState == 4) {
+                        if (this.status == 404) {
+                            document.querySelector("#no-item-alert").style.visibility = "visible";
+                        } else if (this.status == 409) {
+                            document.querySelector("#wrong-type-item-alert").style.visibility = "visible";
+                        } else {
+                            sessionStorage.setItem("selectedItem", item.itemName);
+                            document.querySelector("#item-set-alert").style.visibility = "visible";
+                        }
+                    }
+                }
+
+                req.open("POST",
+                    "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/player/setitem/" + sessionStorage.getItem("username"),
+                    true);
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify(item));
             }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -94,9 +122,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li>
-                        <form class="form-inline" action="/mariokartfighter_v2/player/profile" method="get">
-                            <a class="nav-link" href="player.html">My Profile</a>
-                        </form>
+                        <a class="nav-link" href="player.html">My Profile</a>
                     </li>
                     <li>
                         <a class="nav-link" href="character.html">Character Menu</a>
@@ -114,9 +140,7 @@
             </div>
             <span class="welcome-text" id="welcome-player">Welcome Player _____ !</span>
             <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
-            <form class="form-inline" action="/mariokartfighter_v2/player/logout" method="get">
-                <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
-            </form>
+            <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
         </nav>
 
         <br>
@@ -138,7 +162,7 @@
                      <!-- get item info -->
                      <div class="row">
                         <div class="col">
-                            <form method="/mariokartfighter_v2/item/getinfo" action="get">
+                            <form>
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Item Name" id="item-name" value="">
                                     <div class="input-group-append">
@@ -179,6 +203,9 @@
                             </div>
                             <div class="row">
                                 <div class="col">
+                                    <div class="form-group alert alert-success" id="item-set-alert" role="alert">
+                                        Your item has been set. You can view it in <a href="player.html">your profile</a>.
+                                    </div>
                                     <div class="alert alert-warning" role="alert" id="wrong-type-item-alert">
                                        You can't set this as your item because its type is not compatible with you character. Click <a href="character_getinfo.html" class="alert-link">here</a> to set a new character.
                                     </div>

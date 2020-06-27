@@ -97,23 +97,45 @@ public class PlayerController {
 	}
 	
 	@POST
-	@Path("/setcharacter")
+	@Path("/setcharacter/{username}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response setCharacter(PlayableCharacter character, @PathParam("username") String playerID) {
 		logger.info("setting character for player " + playerID);
-		repo.assignCharacterToPlayer(character, playerID);
 		//TODO check if item type still allowed
-		return Response.status(201).build();
+		Player thisPlayer = playerService.getPlayerObject(playerID);
+		if(character.getCharacterName() != "") {			
+			if (thisPlayer.getSelectedItem() != null) {
+				Item itemInfo = itemRepo.getItemInfo(thisPlayer.getSelectedItem().getItemName());
+				if (!itemInfo.getTypeThatCanUse().equals(character.getType())) {
+					//remove item from player
+					repo.assignCharacterToPlayer(characterRepo.getCharacterInfo(character.getCharacterName()), playerID);
+					repo.assignItemToPlayer(null, playerID);
+					return Response.status(409).build();
+				}
+			}
+			return Response.status(201).build();
+		}
+		return Response.status(404).build();
 	}
 	
 	@POST
-	@Path("/setitem")
+	@Path("/setitem/{username}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response setitem(Item item, @PathParam("username") String playerID) {
 		logger.info("setting character for player " + playerID);
+		System.out.println(item.getItemName());
 		//TODO check if item type allowed for character
-		repo.assignItemToPlayer(item, playerID);
-		return Response.status(201).build();
+		Player thisPlayer = playerService.getPlayerObject(playerID);
+		if (item.getItemName() != "") {			
+			Item itemInfo = itemRepo.getItemInfo(item.getItemName());
+			System.out.println(itemInfo.getTypeThatCanUse() + " " + thisPlayer.getSelectedCharacter().getType());
+			if (thisPlayer.getSelectedCharacter() != null && !itemInfo.getTypeThatCanUse().equals(thisPlayer.getSelectedCharacter().getType())) {
+				return Response.status(409).build();
+			}
+			repo.assignItemToPlayer(itemRepo.getItemInfo(item.getItemName()), playerID);
+			return Response.status(201).build();
+		}
+		return Response.status(404).build();
 	}
 	
 	@GET
