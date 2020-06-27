@@ -33,7 +33,7 @@ public class ConnectionService {
 		try {
 			connection.close();
 		} catch(Exception e) {
-			
+			System.out.println("Exception: " + e.getMessage());
 		}
 	}
 	

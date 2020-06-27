@@ -40,6 +40,10 @@ public class CharacterController {
 		if(retrievedCharacter == null) {
 			return Response.status(404).build();
 		}
+		String characterImage = repo.getCharacterImageURL(retrievedCharacter.getCharacterID());
+		if(characterImage != "") {
+			retrievedCharacter.setCharacterImage(characterImage);
+		}
 		return Response.ok(retrievedCharacter).build();
 	}
 	

@@ -5,9 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             function setPlayerName() {
+                clearAlerts();
                 document.getElementById("welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
             }
+            function clearAlerts() {
+                document.querySelector("#item-created-alert").style.visibility = "hidden";
+            }
             function addItem() {
+                clearAlerts();
                 let item = {};
 
                 item.itemName = document.querySelector("#item-name").value;
@@ -27,6 +32,10 @@
                         document.querySelector("#bonus-attack").value = "";
                         document.querySelector("#bonus-defense").value = "";
                         document.querySelector("#item-image").value = "";
+                    }
+
+                    if (this.readyState == 4 && this.response == 201) {
+                        document.querySelector("#item-created-alert").style.visibility = "visible";
                     }
                 }
 
@@ -132,7 +141,7 @@
                         </div>
                         <button class="btn btn-primary" type="button" id="button-addon1" onClick="addItem()">Create Item</button>
                         <div class="alert alert-warning" role="alert" id="item-created-alert">
-                            Your item has been created and can be unlocked at level ___.
+                            Your item has been created.
                         </div>
                     </form>
                 </div>

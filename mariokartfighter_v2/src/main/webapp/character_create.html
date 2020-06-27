@@ -5,9 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             function setPlayerName() {
+                clearAlerts();
                 document.getElementById("welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
             }
+            function clearAlerts() {
+                document.querySelector("#character-created-alert").style.visibility = "hidden";
+            }
             function addCharacter() {
+                clearAlerts();
                 let character = {};
 
                 character.characterName = document.querySelector("#character-name").value;
@@ -27,6 +32,10 @@
                         document.querySelector("#attack-stat").value = "";
                         document.querySelector("#defense-stat").value = "";
                         document.querySelector("#character-image").value = "";
+                    }
+
+                    if (this.readyState == 4 && this.response == 201) {
+                        document.querySelector("#character-created-alert").style.visibility = "visible";
                     }
                 }
 
@@ -133,8 +142,8 @@
                             <input type="text" class="form-control" id="character-image" placeholder="Optional">
                         </div>
                         <button class="btn btn-primary" type="button" id="button-addon1" onClick="addCharacter()">Create Character</button>
-                        <div class="alert alert-warning" role="alert" hidden=true>
-                            Your character has been created and can be unlocked at level ___.
+                        <div class="alert alert-warning" role="alert" id="character-created-alert">
+                            Your character has been created.
                         </div>
                     </form>
                 </div>
