@@ -22,10 +22,11 @@
 
                         characters = JSON.parse(this.responseText);
                         let table = document.querySelector("#character-table tbody");
-
+                        
+                        console.log(sessionStorage.getItem("playerLevel"));
                         for (let i = 0; i < characters.length; ++i) {
 
-                            if (document.querySelector("#include-locked-characters") == "off") {
+                            if (document.getElementById("include-locked-characters").checked == false) {
                                 if (characters[i].unlockAtLevel > sessionStorage.getItem("playerLevel")) {
                                     continue;
                                 }

@@ -37,10 +37,12 @@
                         document.querySelector("#login-alert").style.visibility = "hidden";
                         document.querySelector("#create-alert").style.visibility = "hidden";
                     }
+
                     
                     if(this.readyState == 4) {
-                        console.log(params.newPlayer);
-                        if (this.status == 201) {
+                        if (this.status == 200) {
+                            player = JSON.parse(this.responseText);
+                            sessionStorage.setItem("playerLevel", player.level);
                             //go to mainMenu.html
                             window.location.href = "http://localhost:8080/mariokartfighter_v2/mainMenu.html";
                         } else if (this.status == 401) {

@@ -23,7 +23,7 @@
                         let table = document.querySelector("#matches-table tbody");
 
                         for (let i = 0; i < matches.length; ++i) {
-                            if (document.querySelector("#only-player-matches") == "on") {
+                            if (document.getElementById("only-player-matches").checked == true) {
                                 if (matches[i].player1ID != sessionStorage.getItem("username") 
                                         && matches[i].player2ID != sessionStorage.getItem("username")) {
                                     continue;

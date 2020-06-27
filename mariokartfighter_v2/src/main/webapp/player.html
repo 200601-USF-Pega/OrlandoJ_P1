@@ -44,17 +44,21 @@
                         let matchesWon = document.querySelector("#num-matches-won");
                         matchesWon.innerHTML = "Matches Won: " + player.numberOfWins;
 
-                        let playerCharImage = document.querySelector("#character-image");
-                        playerCharImage.setAttribute("src", player.selectedCharacter.characterImage);
+                        if (player.selectedCharacter != null) {
+                            let playerCharImage = document.querySelector("#character-image");
+                            playerCharImage.setAttribute("src", player.selectedCharacter.characterImage);
 
-                        let characterName = document.querySelector("#character-image-name");
-                        characterName.innerHTML = player.selectedCharacter.characterName;
+                            let characterName = document.querySelector("#character-image-name");
+                            characterName.innerHTML = player.selectedCharacter.characterName;
+                        }
+                        
+                        if (player.selectedItem != null) {
+                            let playerItemImage = document.querySelector("#item-image");
+                            playerItemImage.setAttribute("src", player.selectedItem.itemImage);
 
-                        let playerItemImage = document.querySelector("#item-image");
-                        playerItemImage.setAttribute("src", player.selectedItem.itemImage);
-
-                        let itemName = document.querySelector("#item-image-name");
-                        itemName.innerHTML = player.selectedItem.itemName;
+                            let itemName = document.querySelector("#item-image-name");
+                            itemName.innerHTML = player.selectedItem.itemName;
+                        }
                     }
                 };
                 xhttp.open("GET",

@@ -35,6 +35,7 @@ public class PlayerController {
 	
 	@POST
 	@Path("/login")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response login(LinkedHashMap<String, String> params) {
 		boolean newPlayer = params.get("newPlayer").equals("true");
@@ -56,12 +57,13 @@ public class PlayerController {
 				return Response.status(409).build();
 			}
 			logger.info("player " + player.getPlayerID() + " created an account");
-			return Response.status(201).build();
+			return Response.ok(player).build();
 		} else {
+			Player player = playerService.getPlayerObject(playerID);
 			boolean validLogin = playerService.checkPassword(playerID, password);
 			if(validLogin) {
 				logger.info("player " + playerID + " logged in");
-				return Response.status(201).build();
+				return Response.ok(player).build();
 			} else {
 //				System.out.println("invalid login");
 				logger.warn("incorrect login for username " + playerID);

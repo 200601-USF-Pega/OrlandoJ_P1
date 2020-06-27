@@ -25,8 +25,8 @@
 
                         for (let i = 0; i < items.length; ++i) {
 
-                            if (document.querySelector("#include-locked-items") == "off") {
-                                if (items[i].unlockAtLevel > playerLevel) {
+                            if (document.getElementById("include-locked-items").checked == false) {
+                                if (items[i].unlockAtLevel > sessionStorage.getItem("playerLevel")) {
                                     continue;
                                 }
                             }
