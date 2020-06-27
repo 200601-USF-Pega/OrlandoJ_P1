@@ -13,16 +13,24 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status > 199) {
-                        // //remove old data
-                        // document.querySelectorAll("#player-info p").forEach(
-                        //     function (e) {
-                        //         e.remove()
-                        //     });
+                        document.querySelectorAll("#progress-div div")
+                            .forEach(
+                                function(element) {
+                                    element.remove();
+                                }
+                        );
 
                         player = JSON.parse(this.responseText);
 
+                        document.getElementById("player-name").innerHTML = "Player " + sessionStorage.getItem("username");
+
                         let rank = document.querySelector("#player-rank");
-                        rank.innerHTML = "Rank: " + player.rank;
+                        console.log(player.rank);
+                        if (player.rank == 0) {
+                            rank.innerHTML = "Rank: unranked";
+                        } else {
+                            rank.innerHTML = "Rank: " + player.rank;
+                        }
                         
                         let level = document.querySelector("#player-level");
                         level.innerHTML = "Level: " + player.level;
@@ -31,21 +39,26 @@
                         xpEarned.innerHTML = "XP Earned: " + player.xpEarned;
                         
                         let matchesPlayed = document.querySelector("#num-matches-played");
-                        matchesPlayed.innerHTML = "Matches Played: " + player.numMatchesPlayed;
+                        matchesPlayed.innerHTML = "Matches Played: " + player.numberOfMatches;
                         
                         let matchesWon = document.querySelector("#num-matches-won");
-                        matchesWon.innerHTML = "Matches Won: " + player.numMatchesWon;
+                        matchesWon.innerHTML = "Matches Won: " + player.numberOfWins;
 
                         let playerCharImage = document.querySelector("#character-image");
-                        playerCharImage.setAttribute("src", player.characterURL);
+                        playerCharImage.setAttribute("src", player.selectedCharacter.characterImage);
+
+                        let characterName = document.querySelector("#character-image-name");
+                        characterName.innerHTML = player.selectedCharacter.characterName;
 
                         let playerItemImage = document.querySelector("#item-image");
-                        playerItemImage.setAttribute("src", player.itemURL);
+                        playerItemImage.setAttribute("src", player.selectedItem.itemImage);
 
+                        let itemName = document.querySelector("#item-image-name");
+                        itemName.innerHTML = player.selectedItem.itemName;
                     }
                 };
                 xhttp.open("GET",
-                    "http://localhost:8080/mariokartfighter_v2/player/profile/" + playerID,
+                    "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/player/profile/" + sessionStorage.getItem("username"),
                     true);
                 xhttp.send();
             }
@@ -97,7 +110,7 @@
         <div class="container bg-light login-box">
             <div class="row">
                 <div class="col-2">
-                    <h2>Player _____</h2>
+                    <h2 id="player-name">Player _____</h2>
                 </div>
                 <div class="col-1">
                     <button class="btn btn-outline-primary" type="button" id="refresh-button" onClick="getPlayerInfo()">Refresh</button>
@@ -105,21 +118,13 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <div class="row border-bottom">
+                    <div class="row">
                         <div class="col" id="player-info">
                             <p id="player-rank">Rank: </p>
                             <p id="player-level">Level: </p>
                             <p id="xp-earned">XP Earned: </p>
                             <p id="num-matches-played">Matches Played: </p>
                             <p id="num-matches-won">Matches Won: </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h4>Statistics:</h4>
-                            <div class="progress">
-                                <div class="progress-bar w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Wins</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -131,7 +136,17 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <img src="https://vignette.wikia.nocookie.net/nintendo/images/d/d8/New_Super_Mario_Bros._U_Deluxe_-_Mario_01.png/revision/latest?cb=20181226204245&path-prefix=en" class="img-fluid" alt="selected character image" id="character-image">
+                            <img src="https://lh3.googleusercontent.com/proxy/kHx3-eWikgFuKdaiTw9wtC4_5kjCTcCWJzbPtNvoBrw9EwidBJeKMNKnf0nPr2C4aUwMrchLhm_eyMkpu603G52C2dJKoZq8uGoD6u01j9QTnbsdOfR0JjMaOBaVXw" class="img-fluid" alt="selected character image" id="character-image">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="image-name" id="character-image-name">None Selected</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a class="btn btn-outline-success" type="button" href="character_getinfo.html">Change Character</a>
                         </div>
                     </div>
                 </div>
@@ -143,7 +158,17 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <img src="https://vignette.wikia.nocookie.net/mariokart/images/b/b6/Spiny_Shell_-_Mario_Kart_Wii.png/revision/latest?cb=20170630042108" class="img-fluid" alt="selected item image" id="item-image">
+                            <img src="https://lh3.googleusercontent.com/proxy/kHx3-eWikgFuKdaiTw9wtC4_5kjCTcCWJzbPtNvoBrw9EwidBJeKMNKnf0nPr2C4aUwMrchLhm_eyMkpu603G52C2dJKoZq8uGoD6u01j9QTnbsdOfR0JjMaOBaVXw" class="img-fluid" alt="selected item image" id="item-image">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="image-name" id="item-image-name">None Selected</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a class="btn btn-outline-success" type="button" href="item_getinfo.html">Change Item</a>
                         </div>
                     </div>
                 </div>

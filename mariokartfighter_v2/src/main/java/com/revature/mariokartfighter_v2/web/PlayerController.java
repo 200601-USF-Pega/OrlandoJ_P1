@@ -14,7 +14,11 @@ import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.revature.mariokartfighter_v2.dao.CharacterRepoDB;
+import com.revature.mariokartfighter_v2.dao.ICharacterRepo;
+import com.revature.mariokartfighter_v2.dao.IItemRepo;
 import com.revature.mariokartfighter_v2.dao.IPlayerRepo;
+import com.revature.mariokartfighter_v2.dao.ItemRepoDB;
 import com.revature.mariokartfighter_v2.dao.PlayerRepoDB;
 import com.revature.mariokartfighter_v2.models.Item;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
@@ -25,6 +29,8 @@ import com.revature.mariokartfighter_v2.service.PlayerService;
 public class PlayerController {
 	private static final Logger logger = LogManager.getLogger(PlayerController.class); 
 	private static IPlayerRepo repo = new PlayerRepoDB();
+	private static ICharacterRepo characterRepo = new CharacterRepoDB();
+	private static IItemRepo itemRepo = new ItemRepoDB();
 	private static PlayerService playerService = new PlayerService(repo);
 	
 	@POST
@@ -57,7 +63,7 @@ public class PlayerController {
 				logger.info("player " + playerID + " logged in");
 				return Response.status(201).build();
 			} else {
-				System.out.println("invalid login");
+//				System.out.println("invalid login");
 				logger.warn("incorrect login for username " + playerID);
 				return Response.status(401).build();	//401 = unauthorized
 			}
@@ -68,9 +74,26 @@ public class PlayerController {
 	@Path("/profile/{username}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public static Response getProfile(@PathParam("username") String playerID) {
-		System.out.println("getting profile");
 		logger.info("getting player info for player " + playerID);
-		return Response.ok(repo.getPlayerInfo(playerID)).build();
+		
+		System.out.println(playerID);
+		Player requestedPlayer = repo.getPlayerInfo(playerID);
+		PlayableCharacter playerCharacter = requestedPlayer.getSelectedCharacter();
+		Item playerItem = requestedPlayer.getSelectedItem();
+		int rank = repo.getPlayerRank(playerID);
+		
+		if (playerCharacter != null) {			
+			playerCharacter.setCharacterImage(characterRepo.getCharacterImageURL(playerCharacter.getCharacterID()));
+		}
+		if (playerItem != null) {			
+			playerItem.setItemImage(itemRepo.getItemImageURL(playerItem.getItemID()));
+		}
+		if (rank == -1) {
+			requestedPlayer.setRank(0);
+		} else {			
+			requestedPlayer.setRank(rank);
+		}
+		return Response.ok(requestedPlayer).build();
 	}
 	
 	@POST

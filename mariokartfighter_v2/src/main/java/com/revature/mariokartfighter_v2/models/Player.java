@@ -11,6 +11,7 @@ public class Player implements Serializable {
 	private int numberOfMatches;
 	private PlayableCharacter selectedCharacter;
 	private Item selectedItem;
+	private int rank;
 	
 	public Player(String playerID) {
 		this.playerID = playerID;
@@ -149,5 +150,13 @@ public class Player implements Serializable {
 
 	public void setSelectedItem(Item selectedItem) {
 		this.selectedItem = selectedItem;
+	}
+
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
 	}
 }

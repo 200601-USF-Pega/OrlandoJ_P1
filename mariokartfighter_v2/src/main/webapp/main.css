@@ -36,6 +36,9 @@ body {
     max-height: 300px; 
     overflow: visible;
 }
+.progress {
+    vertical-align: bottom;
+}
 .active {
     background-color: rgb(137, 163, 221);
     color: white;
@@ -62,4 +65,10 @@ div > .alert-danger {
 }
 #refresh-button {
     margin-right: 10px;
+}
+#player-info > p {
+    font-size: 20px;
+}
+.image-name {
+    font-style: italic;
 }

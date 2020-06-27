@@ -141,13 +141,13 @@ public class ItemRepoDB implements IItemRepo {
 	public String getItemImageURL(String itemID) {
 		try {			
 			PreparedStatement getItemURL = ConnectionService.getConnection().prepareStatement(
-					"SELECT * FROM characterImages WHERE characterID = ?;");
+					"SELECT * FROM itemImages WHERE itemID = ?;");
 			getItemURL.setString(1, itemID);
 			ResultSet itemsRS = getItemURL.executeQuery();
 			
 			while(itemsRS.next()) {				
 				return itemsRS.getString("url");
-			}	
+			}
 		} catch (SQLException e) {
 			System.out.println("Exception: " + e.getMessage());
 			e.printStackTrace();
