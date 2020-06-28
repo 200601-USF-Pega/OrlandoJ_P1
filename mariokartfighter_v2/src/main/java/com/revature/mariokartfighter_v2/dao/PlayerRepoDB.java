@@ -226,12 +226,18 @@ public class PlayerRepoDB implements IPlayerRepo {
 			
 			PreparedStatement updatePlayer = ConnectionService.getConnection().prepareStatement(
 					"UPDATE player "
-					+ "SET xpEarned = ?, xpLevel = ?"
+					+ "SET xpEarned = ?, xpLevel = ?, numberOfMatchesPlayed = ?, numberOfWins = ?"
 					+ "WHERE playerID = ?;");
 			
 			updatePlayer.setInt(1, currentPlayer.getXpEarned());
 			updatePlayer.setInt(2, currentPlayer.getLevel());
-			updatePlayer.setString(3, currentPlayer.getPlayerID());
+			updatePlayer.setInt(3, currentPlayer.getNumberOfMatches() + 1);
+			if(wonMatch) {
+				updatePlayer.setInt(4, currentPlayer.getNumberOfWins() + 1);				
+			} else {				
+				updatePlayer.setInt(4, currentPlayer.getNumberOfWins());
+			}
+			updatePlayer.setString(5, currentPlayer.getPlayerID());
 			
 			updatePlayer.executeUpdate();
 			

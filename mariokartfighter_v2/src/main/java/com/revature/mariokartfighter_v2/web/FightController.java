@@ -1,5 +1,8 @@
 package com.revature.mariokartfighter_v2.web;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -49,8 +52,14 @@ public class FightController {
 		botItem.setItemImage(itemRepo.getItemImageURL(botItem.getItemID()));
 		Bot newBot = gameService.createNewBot(bot.getLevel(), botCharacter, botItem);
 		
-		String winner = gameService.botFight(newBot, playerID);
-		System.out.println(winner);
+		Map<String, Boolean> result = gameService.botFight(newBot, playerID);
+		String winner = null;
+		boolean leveledUp = false;
+		for(Map.Entry<String, Boolean> entry : result.entrySet()) {
+			winner = entry.getKey();
+			leveledUp = entry.getValue();
+		}
+		
 		if(winner == null) {
 			return Response.status(400).build();
 		}
@@ -58,11 +67,19 @@ public class FightController {
 		if (winner.equals(playerID)) {			
 			//player wins
 			logger.info("player " + playerID + " wins!");
-			return Response.ok(newBot).status(200).build();
+			if(leveledUp) {
+				return Response.ok(newBot).status(202).build();
+			} else {				
+				return Response.ok(newBot).status(200).build();
+			}
 		} else {
 			//bot wins
 			logger.info("bot wins!");
-			return Response.ok(newBot).status(201).build();
+			if(leveledUp) {				
+				return Response.ok(newBot).status(203).build();
+			} else {				
+				return Response.ok(newBot).status(201).build();
+			}
 		}
 	}
 	

@@ -1,15 +1,17 @@
 package com.revature.mariokartfighter_v2.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.revature.mariokartfighter_v2.dao.ICharacterRepo;
 import com.revature.mariokartfighter_v2.dao.IItemRepo;
 import com.revature.mariokartfighter_v2.dao.IMatchRecordRepo;
-import com.revature.mariokartfighter_v2.dao.ICharacterRepo;
 import com.revature.mariokartfighter_v2.dao.IPlayerRepo;
 import com.revature.mariokartfighter_v2.models.Bot;
 import com.revature.mariokartfighter_v2.models.Item;
@@ -151,7 +153,7 @@ public class GameService {
 		return newBot;
 	}
 	
-	public String botFight(Bot bot, String playerID) {
+	public Map<String, Boolean> botFight(Bot bot, String playerID) {
 		//find player info
 		List<Player> retrievedPlayers = playerRepo.getAllPlayers();
 		for (Player p : retrievedPlayers) {
@@ -188,13 +190,15 @@ public class GameService {
 					playerHealth -= botStrength;
 				}
 				
-				String winnerID;
+				String winnerID = null;
+				boolean leveledUp = false;
 				if(botHealth < playerHealth) {
 					winnerID = p.getPlayerID();
-					playerRepo.updateAfterFight(true, p.getPlayerID());
+					leveledUp = playerRepo.updateAfterFight(true, p.getPlayerID());
 					logger.info("Player 1 wins!!");
 				} else {
 					winnerID = bot.getBotID();
+					leveledUp = playerRepo.updateAfterFight(false, p.getPlayerID());
 					logger.info("Bot wins!!");
 				}
 				logger.info("player " + winnerID + " won the match");
@@ -208,7 +212,9 @@ public class GameService {
 				matchRecordRepo.addMatchRecord(newMatch);
 				logger.info("match " + newMatch.getMatchID() + "added to repo");
 				
-				return winnerID;
+				Map<String, Boolean> result =  new HashMap<String, Boolean>();
+				result.put(winnerID, leveledUp);
+				return result;
 			}
 		}
 		return null;
