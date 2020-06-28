@@ -59,6 +59,12 @@ public class PlayerController {
 			return Response.ok(player).build();
 		} else {
 			Player player = playerService.getPlayerObject(playerID);
+			if (player.getSelectedCharacter() != null) {
+				player.getSelectedCharacter().setCharacterImage(characterRepo.getCharacterImageURL(player.getSelectedCharacter().getCharacterID()));
+			}
+			if(player.getSelectedItem() != null) {
+				player.getSelectedItem().setItemImage(itemRepo.getItemImageURL(player.getSelectedItem().getItemID()));
+			}
 			boolean validLogin = playerService.checkPassword(playerID, password);
 			if(validLogin) {
 				logger.info("player " + playerID + " logged in");

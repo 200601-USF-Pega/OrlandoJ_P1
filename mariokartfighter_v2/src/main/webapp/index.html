@@ -35,21 +35,25 @@
                         document.querySelector("#login-alert").style.visibility = "hidden";
                         document.querySelector("#create-alert").style.visibility = "hidden";
                     }
-
                     
                     if(this.readyState == 4) {
+                        console.log(this.status + " logging in");
                         if (this.status == 200) {
                             player = JSON.parse(this.responseText);
                             sessionStorage.setItem("playerLevel", player.level);
                             if (player.selectedCharacter != null) {
-                                sessionStorage.setItem("selectedCharacter", player.selectedCharacter.characterID);
+                                sessionStorage.setItem("selectedCharacter", player.selectedCharacter.characterName);
+                                sessionStorage.setItem("selectedCharacterImage", player.selectedCharacter.characterImage);
                             } else {
                                 sessionStorage.setItem("selectedCharacter", null);
+                                sessionStorage.setItem("selectedCharacterImage", null);
                             }
                             if (player.selectedItem != null) {
-                                sessionStorage.setItem("selectedItem", player.selectedItem.itemID);
+                                sessionStorage.setItem("selectedItem", player.selectedItem.itemName);
+                                sessionStorage.setItem("selectedItemImage", player.selectedItem.itemImage);
                             } else {
                                 sessionStorage.setItem("selectedItem", null);
+                                sessionStorage.setItem("selectedItemImage", null);
                             }
                             //go to mainMenu.html
                             window.location.href = "http://localhost:8080/mariokartfighter_v2/mainMenu.html";

@@ -11,9 +11,20 @@ public class Bot {
 		this.selectedCharacter = selectedCharacter;
 		this.selectedItem = selectedItem;
 		this.level = level;
+		if (this.id == null) {			
+			this.id = this.generateBotID();
+		}
+	}
+	
+	public Bot(int level) {
+		this.level = level;
 		this.id = this.generateBotID();
 	}
-
+	
+	public Bot(){
+		super();
+	}
+	
 	@Override
 	public String toString() {
 		return "Bot [selectedCharacter=" + selectedCharacter + ", selectedItem=" + selectedItem + ", level=" + level

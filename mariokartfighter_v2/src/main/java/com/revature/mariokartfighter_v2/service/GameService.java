@@ -151,7 +151,7 @@ public class GameService {
 		return newBot;
 	}
 	
-	public void botFight(Bot bot, String playerID) {
+	public String botFight(Bot bot, String playerID) {
 		//find player info
 		List<Player> retrievedPlayers = playerRepo.getAllPlayers();
 		for (Player p : retrievedPlayers) {
@@ -164,15 +164,15 @@ public class GameService {
 				int playerHealth = p.getSelectedCharacter().getMaxHealth();
 				int botHealth = bot.getSelectedCharacter().getMaxHealth();
 				
-				System.out.println("Player 1 Character:");
-				System.out.println(playerChar.getInfoString());
-				System.out.println("Player 1 Item:");
-				System.out.println(playerItem.getInfoString());
-				
-				System.out.println("Bot Character:");
-				System.out.println(botChar.getInfoString());
-				System.out.println("Bot Item:");
-				System.out.println(botItem.getInfoString());
+//				System.out.println("Player 1 Character:");
+//				System.out.println(playerChar.getInfoString());
+//				System.out.println("Player 1 Item:");
+//				System.out.println(playerItem.getInfoString());
+//				
+//				System.out.println("Bot Character:");
+//				System.out.println(botChar.getInfoString());
+//				System.out.println("Bot Item:");
+//				System.out.println(botItem.getInfoString());
 				
 				while(botHealth > 0 && playerHealth > 0) {
 					//strength is player attack - opponent defense
@@ -192,10 +192,10 @@ public class GameService {
 				if(botHealth < playerHealth) {
 					winnerID = p.getPlayerID();
 					playerRepo.updateAfterFight(true, p.getPlayerID());
-					System.out.println("Player 1 wins!!");
+					logger.info("Player 1 wins!!");
 				} else {
 					winnerID = bot.getBotID();
-					System.out.println("Bot wins!!");
+					logger.info("Bot wins!!");
 				}
 				logger.info("player " + winnerID + " won the match");
 				
@@ -207,9 +207,11 @@ public class GameService {
 						bot.getSelectedItem().getItemID(), true, winnerID);
 				matchRecordRepo.addMatchRecord(newMatch);
 				logger.info("match " + newMatch.getMatchID() + "added to repo");
-				break;
+				
+				return winnerID;
 			}
 		}
+		return null;
 	}
 	
 	public void playerFight(Player player1, Player player2) {	

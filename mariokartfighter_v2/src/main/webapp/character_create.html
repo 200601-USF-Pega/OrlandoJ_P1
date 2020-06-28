@@ -112,7 +112,7 @@
                         </div>
                         <div class="form-group">
                             <label for="type-select">Type</label>
-                            <select class="form-control" id="type-select" required>
+                            <select class="form-control" id="type-select">
                                 <option value="all-around">All-Around</option>
                                 <option value="speed">Speed</option>
                                 <option value="power">Power</option>
@@ -121,15 +121,15 @@
                         </div>
                         <div class="form-group">
                             <label for="maxhealth">Max Health</label>
-                            <input type="text" class="form-control" id="max-health" required>
+                            <input type="number" class="form-control" id="max-health" min="1" required>
                         </div>
                         <div class="form-group">
                             <label for="attack-stat">Attack Stat</label>
-                            <input type="text" class="form-control" id="attack-stat" required>
+                            <input type="number" class="form-control" id="attack-stat" min="0" required>
                         </div>
                         <div class="form-group">
                             <label for="defense-stat">Defense Stat</label>
-                            <input type="text" class="form-control" id="defense-stat" required>
+                            <input type="number" class="form-control" id="defense-stat" min="0" required>
                         </div>
                         <div class="form-group">
                             <label for="character-image">Character Image URL</label>

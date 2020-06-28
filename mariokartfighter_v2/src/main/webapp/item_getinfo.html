@@ -87,8 +87,10 @@
                         } else if (this.status == 409) {
                             document.querySelector("#wrong-type-item-alert").style.visibility = "visible";
                         } else {
-                            sessionStorage.setItem("selectedItem", item.itemName);
                             document.querySelector("#item-set-alert").style.visibility = "visible";
+
+                            sessionStorage.setItem("selectedItem", item.itemName);
+                            sessionStorage.setItem("selectedItemImage", item.itemImage);
                         }
                     }
                 }

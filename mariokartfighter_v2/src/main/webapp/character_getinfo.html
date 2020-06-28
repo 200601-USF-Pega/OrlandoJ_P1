@@ -83,13 +83,22 @@
                         if(this.status == 404){
                             document.querySelector("#no-character-alert").style.visibility = "visible";
                         } else if (this.status == 409 ) {
+                            //character type doesnt match item type
                             document.querySelector("#character-set-alert").style.visibility = "visible";
                             document.querySelector("#wrong-type-character-alert").style.visibility = "visible";
+
                             sessionStorage.setItem("selectedCharacter", character.characterName);
+                            sessionStorage.setItem("selectedCharacterImage", character.characterImage);
+
+                            //remove item from player
                             sessionStorage.setItem("selectedItem", null);
+                            sessionStorage.setItem("selectedItemImage", null);
                         } else {
-                            sessionStorage.setItem("selectedCharacter", character.characterName);
+                            //character matches item type
                             document.querySelector("#character-set-alert").style.visibility = "visible";
+
+                            sessionStorage.setItem("selectedCharacter", character.characterName);
+                            sessionStorage.setItem("selectedCharacterImage", character.characterImage);
                         }
                     }
                 }

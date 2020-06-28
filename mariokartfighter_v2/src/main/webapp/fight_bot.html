@@ -7,6 +7,79 @@
             function setPlayerName() {
                 document.getElementById("welcome-player").innerHTML = "Welcome Player " + sessionStorage.getItem("username") + "!";
             }
+            function clearAlerts() {
+                document.querySelector("#set-character-item-alert").style.visibility = "hidden";
+                document.querySelector("#bot-wins-alert").style.visibility = "hidden";
+                document.querySelector("#player-wins-alert").style.visibility = "hidden";
+            }
+            function fightBot() {
+                clearAlerts();
+
+                //check if character and item set
+                if (sessionStorage.getItem("selectedCharacter") == null || sessionStorage.getItem("selectedItem") == null) {
+                    document.querySelector("#set-character-item-alert").style.visibility = "hidden";
+                    return;
+                }
+
+                var bot = {};
+                bot.level = document.querySelector("#bot-level").value;
+
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function () {
+                    if (this.readyState > 3) {                        
+                        document.querySelector("#bot-level").value = "";
+                    }
+
+                    if (this.readyState == 4) {
+                        var botResponse = JSON.parse(this.responseText);
+                        //bot images
+                        if (botResponse.selectedCharacter.characterImage != null) {
+                            let botCharImage = document.querySelector("#bot-character-image");
+                            botCharImage.setAttribute("src", botResponse.selectedCharacter.characterImage);
+                        }
+                        let botCharacterName = document.querySelector("#bot-character-image-name");
+                        botCharacterName.innerHTML = botResponse.selectedCharacter.characterName;
+
+                        if (botResponse.selectedItem.itemImage != null) {
+                            let botItemImage = document.querySelector("#bot-item-image");
+                            botItemImage.setAttribute("src", botResponse.selectedItem.itemImage);
+                        }
+                        let botItemName = document.querySelector("#bot-item-image-name");
+                        botItemName.innerHTML = botResponse.selectedItem.itemName;
+
+                        //player images
+                        if(sessionStorage.getItem("selectedCharacterImage") != null) {
+                            let playerCharImage = document.querySelector("#player-character-image");
+                            playerCharImage.setAttribute("src", sessionStorage.getItem("selectedCharacterImage"));
+                        }
+                        let characterName = document.querySelector("#player-character-image-name");
+                        characterName.innerHTML = sessionStorage.getItem("selectedCharacter");
+
+                        if (sessionStorage.getItem("selectedItemImage") != null) {
+                            let playerItemImage = document.querySelector("#player-item-image");
+                            playerItemImage.setAttribute("src", sessionStorage.getItem("selectedItemImage"));
+                        }
+                        let itemName = document.querySelector("#player-item-image-name");
+                        itemName.innerHTML = sessionStorage.getItem("selectedItem");
+
+                        if(this.status == 201){
+                            //bot wins
+                            document.querySelector("#bot-wins-alert").style.visibility = "visible";
+                        } else if (this.status == 200) {
+                            //player wins
+                            document.querySelector("#player-wins-alert").style.visibility = "visible";
+                        } else {
+                            console.log(this.status + " bad request");
+                        }
+                    }
+                }
+
+                req.open("POST",
+                    "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/fight/bot/" + sessionStorage.getItem("username"),
+                    true);
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify(bot));
+            }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -29,9 +102,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li>
-                        <form class="form-inline" action="/mariokartfighter_v2/player/profile" method="get">
-                            <a class="nav-link" href="player.html">My Profile</a>
-                        </form>
+                        <a class="nav-link" href="player.html">My Profile</a>
                     </li>
                     <li>
                         <a class="nav-link" href="character.html">Character Menu</a>
@@ -43,17 +114,13 @@
                         <a class="nav-link active" href="fight.html">Fight Menu</a>
                     </li>
                     <li>
-                        <form class="form-inline" action="/mariokartfighter_v2/matches/get" method="get">
-                            <a class="nav-link" href="matches.html">Matches Menu</a>
-                        </form>
+                        <a class="nav-link" href="matches.html">Matches Menu</a>
                     </li>
                 </ul>
             </div>
             <span class="welcome-text" id="welcome-player">Welcome Player _____ !</span>
             <a class="btn btn-outline-secondary logout" role="button" href="mainMenu.html">Return to Main Menu</a>
-            <form class="form-inline" action="/mariokartfighter_v2/player/logout" method="get">
-                <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
-            </form>
+            <a class="btn btn-outline-danger logout" type="button" href="index.html">Logout</a>
         </nav>
 
         <br>
@@ -61,33 +128,78 @@
         <div class="container col-9 bg-light login-box">
             <div class="row">
                 <div class="col-2 border-right">
-                    <form class="form-button" action="/mariokartfighter_v2/fight/bot" method="get">
+                    <form class="form-button">
                         <a class="btn btn-outline-secondary btn-block active" type="button" href="fight_bot.html">Fight a Bot</a>
                     </form>
-                    <form class="form-button" action="/mariokartfighter_v2/fight/random" method="get" >
+                    <form class="form-button">
                         <a class="btn btn-outline-secondary btn-block" type="button" href="fight_random.html">Fight a Random Player</a>
                     </form>
-                    <form class="form-button" action="/mariokartfighter_v2/fight/otherplayer" method="get">
+                    <form class="form-button">
                         <a class="btn btn-outline-secondary btn-block" type="button" href="fight_player.html">Choose an Opponent</a>
                     </form>
                 </div>
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <div class="alert alert-warning" role="alert">
+                            <div class="alert alert-warning" role="alert" id="set-character-item-alert">
                                 You need to select a <a href="character_getinfo.html" class="alert-link">character</a> and <a href="item_getinfo.html" class="alert-link">item</a> before fighting!
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <form method="get" action="/mariokartfighter_v2/fight/bot">
-                                <div class="form-group">
-                                    <label for="bot-level">Bot Level (between 1 and 25)</label>
-                                    <input type="text" class="form-control" id="bot-level" required>
+                            <div class="form-group">
+                                <label for="bot-level">Bot Level (between 1 and 25)</label>
+                                <input type="number" class="form-control" id="bot-level" min="1" max="25" required>
+                            </div>
+                            <button class="btn btn-primary" type="button" onClick="fightBot()">Fight Bot</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <p>Bot Character:</p>
+                                    <img src="transparent-square.png" alt="bot character image" class="img-fluid" id="bot-character-image">
+                                    <p class="image-name" id="bot-character-image-name"></p>
                                 </div>
-                                <button class="btn btn-primary" type="button">Fight Bot</button>
-                            </form>
+                                <div class="col">
+                                    <p>Bot Item:</p>
+                                    <img src="transparent-square.png" alt="bot item image" class="img-fluid" id="bot-item-image">
+                                    <p class="image-name" id="bot-item-image-name"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="alert alert-success" role="alert" id="bot-wins-alert">
+                                        Bot Wins!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center">
+                            <img src="versus.png" alt="versus symbol" class="img-fluid">
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <p>Player Character:</p>
+                                    <img src="transparent-square.png" alt="player character image" class="img-fluid" id="player-character-image">
+                                    <p class="image-name" id="player-character-image-name"></p>
+                                </div>
+                                <div class="col">
+                                    <p>Player Item:</p>
+                                    <img src="transparent-square.png" alt="player character image" class="img-fluid" id="player-item-image">
+                                    <p class="image-name" id="player-item-image-name"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="alert alert-success" role="alert" id="player-wins-alert">
+                                        Player Wins!
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
