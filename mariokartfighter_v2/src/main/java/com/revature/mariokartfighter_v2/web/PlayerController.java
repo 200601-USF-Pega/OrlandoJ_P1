@@ -11,8 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import com.revature.mariokartfighter_v2.dao.CharacterRepoDB;
 import com.revature.mariokartfighter_v2.dao.ICharacterRepo;
@@ -27,7 +26,7 @@ import com.revature.mariokartfighter_v2.service.PlayerService;
 
 @Path("/player")
 public class PlayerController {
-	private static final Logger logger = LogManager.getLogger(PlayerController.class); 
+	private static final Logger logger = Logger.getLogger(PlayerController.class); 
 	private static IPlayerRepo repo = new PlayerRepoDB();
 	private static ICharacterRepo characterRepo = new CharacterRepoDB();
 	private static IItemRepo itemRepo = new ItemRepoDB();
@@ -38,7 +37,7 @@ public class PlayerController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response login(LinkedHashMap<String, String> params) {
-		logger.error("logging in");
+		logger.info("logging in");
 		boolean newPlayer = params.get("newPlayer").equals("true");
 		String playerID = params.get("playerID");
 		String password = params.get("password");
