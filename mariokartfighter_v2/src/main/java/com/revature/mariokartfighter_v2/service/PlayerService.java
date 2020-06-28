@@ -1,7 +1,9 @@
 package com.revature.mariokartfighter_v2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -141,5 +143,34 @@ public class PlayerService {
 	public void removeTestPlayers(String testName) {
 		logger.info("removed all players with playerID starting with " + testName + " from repo");
 		repo.removePlayers(testName);
+	}
+
+	public Player chooseRandomPlayer(Player player1) {
+		List<Player> retrievedPlayers = repo.getAllPlayers();
+		Player player2 = new Player("");
+		Random rand = new Random();
+		ArrayList<Integer> used_indices = new ArrayList<Integer>();
+		while (player2.getPlayerID().equals("")) {
+			if(used_indices.size() == retrievedPlayers.size()) {
+				//no available players
+				break;
+			}
+			int rand_int = rand.nextInt(retrievedPlayers.size());
+			if(used_indices.contains(rand_int)) {
+				//player already checked
+				continue;
+			}
+			//check if player2 has selected an item and character
+			Player p = retrievedPlayers.get(rand_int);
+			if (p.getSelectedCharacter() == null || p.getSelectedItem() == null 
+					|| p.getPlayerID().equals(player1.getPlayerID())) {
+				//player cant fight or is player 1
+				used_indices.add(rand_int);
+				continue;
+			}
+			player2 = p;
+		}
+		logger.info("chose " + player2.getPlayerID() + " as random player");
+		return player2;
 	}
 }

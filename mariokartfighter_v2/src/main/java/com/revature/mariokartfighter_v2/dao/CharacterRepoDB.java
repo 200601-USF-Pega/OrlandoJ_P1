@@ -49,7 +49,7 @@ public class CharacterRepoDB implements ICharacterRepo {
 	public List<PlayableCharacter> getAllCharacters() {
 		try {			
 			PreparedStatement getCharacters = ConnectionService.getConnection().prepareStatement(
-					"SELECT * FROM playablecharacter;");
+					"SELECT * FROM playablecharacter ORDER BY unlockAtLevel, characterType, name;");
 			ResultSet charactersRS = getCharacters.executeQuery();
 			
 			List<PlayableCharacter> retrievedCharacters = 

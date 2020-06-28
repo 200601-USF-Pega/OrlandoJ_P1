@@ -220,7 +220,7 @@ public class GameService {
 		return null;
 	}
 	
-	public void playerFight(Player player1, Player player2) {	
+	public Map<String, Boolean> playerFight(Player player1, Player player2) {	
 		logger.info("player " + player1.getPlayerID() + " is fighting " + player2.getPlayerID());
 		PlayableCharacter player1Char = player1.getSelectedCharacter();
 		PlayableCharacter player2Char = player2.getSelectedCharacter();
@@ -229,15 +229,15 @@ public class GameService {
 		int player1Health = player1.getSelectedCharacter().getMaxHealth();
 		int player2Health = player2.getSelectedCharacter().getMaxHealth();
 		
-		System.out.println("Player 1 Character:");
-		System.out.println(player1Char.getInfoString());
-		System.out.println("Player 1 Item:");
-		System.out.println(player1Item.getInfoString());
-		
-		System.out.println("Player 2 Character:");
-		System.out.println(player2Char.getInfoString());
-		System.out.println("Player 2 Item:");
-		System.out.println(player2Item.getInfoString());
+//		System.out.println("Player 1 Character:");
+//		System.out.println(player1Char.getInfoString());
+//		System.out.println("Player 1 Item:");
+//		System.out.println(player1Item.getInfoString());
+//		
+//		System.out.println("Player 2 Character:");
+//		System.out.println(player2Char.getInfoString());
+//		System.out.println("Player 2 Item:");
+//		System.out.println(player2Item.getInfoString());
 		
 		while(player2Health > 0 && player1Health > 0) {
 			//strength is player attack - opponent defense
@@ -282,6 +282,10 @@ public class GameService {
 				player2.getSelectedItem().getItemID(), false, winnerID);
 		matchRecordRepo.addMatchRecord(newMatch);
 		logger.info("match " + newMatch.getMatchID() + "added to repo");
+		
+		Map<String, Boolean> result =  new HashMap<String, Boolean>();
+		result.put(winnerID, levelUp1);
+		return result;
 	}
 	
 	public void printAllMatches() {

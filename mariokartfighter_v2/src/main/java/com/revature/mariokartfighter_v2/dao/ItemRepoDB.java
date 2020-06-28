@@ -49,7 +49,7 @@ public class ItemRepoDB implements IItemRepo {
 	public List<Item> getAllItems() {
 		try {			
 			PreparedStatement getItems = ConnectionService.getConnection().prepareStatement(
-					"SELECT * FROM item;");
+					"SELECT * FROM item ORDER BY unlockAtLevel, typeThatCanUse, name;");
 			ResultSet itemsRS = getItems.executeQuery();
 			
 			List<Item> retrievedItems = new ArrayList<Item>();

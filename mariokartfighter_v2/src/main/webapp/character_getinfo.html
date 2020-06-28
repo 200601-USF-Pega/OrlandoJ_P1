@@ -72,6 +72,7 @@
                 var character = {};
 
                 character.characterName = document.querySelector("#character-name").value;
+                console.log("setting character to " + character.characterName);
 
                 var req = new XMLHttpRequest();
                 req.onreadystatechange = function () {
@@ -82,8 +83,9 @@
                     if (this.readyState == 4) {
                         if(this.status == 404){
                             document.querySelector("#no-character-alert").style.visibility = "visible";
-                        } else if (this.status == 409 ) {
+                        } else if (this.status == 409) {
                             //character type doesnt match item type
+                            console.log("type mismatch");
                             document.querySelector("#character-set-alert").style.visibility = "visible";
                             document.querySelector("#wrong-type-character-alert").style.visibility = "visible";
 

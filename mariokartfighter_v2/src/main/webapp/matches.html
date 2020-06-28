@@ -35,7 +35,7 @@
                             let timeCell = row.insertCell(0); 
                             var timestamp = matches[i].timeOfMatch;
                             var date = new Date(timestamp);
-                            timeCell.innerHTML = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " " + date.getMonth() + " " + date.getDay() + ", " + date.getFullYear();
+                            timeCell.innerHTML = date.toLocaleTimeString() + " " + date.toDateString();
 
                             let player1IDCell = row.insertCell(1); 
                             player1IDCell.innerHTML = matches[i].player1ID;

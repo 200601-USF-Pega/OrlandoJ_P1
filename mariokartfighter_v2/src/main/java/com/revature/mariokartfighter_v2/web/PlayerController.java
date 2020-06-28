@@ -109,11 +109,12 @@ public class PlayerController {
 		//TODO check if item type still allowed
 		Player thisPlayer = playerService.getPlayerObject(playerID);
 		if(character.getCharacterName() != "") {			
+			PlayableCharacter characterInfo = characterRepo.getCharacterInfo(character.getCharacterName());
+			repo.assignCharacterToPlayer(characterInfo, playerID);
 			if (thisPlayer.getSelectedItem() != null) {
 				Item itemInfo = itemRepo.getItemInfo(thisPlayer.getSelectedItem().getItemName());
-				if (!itemInfo.getTypeThatCanUse().equals(character.getType())) {
+				if (!itemInfo.getTypeThatCanUse().equals(characterInfo.getType())) {
 					//remove item from player
-					repo.assignCharacterToPlayer(characterRepo.getCharacterInfo(character.getCharacterName()), playerID);
 					repo.assignItemToPlayer(null, playerID);
 					return Response.status(409).build();
 				}
@@ -127,13 +128,11 @@ public class PlayerController {
 	@Path("/setitem/{username}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response setitem(Item item, @PathParam("username") String playerID) {
-		logger.info("setting character for player " + playerID);
+		logger.info("setting item for player " + playerID);
 		System.out.println(item.getItemName());
-		//TODO check if item type allowed for character
 		Player thisPlayer = playerService.getPlayerObject(playerID);
 		if (item.getItemName() != "") {			
 			Item itemInfo = itemRepo.getItemInfo(item.getItemName());
-			System.out.println(itemInfo.getTypeThatCanUse() + " " + thisPlayer.getSelectedCharacter().getType());
 			if (thisPlayer.getSelectedCharacter() != null && !itemInfo.getTypeThatCanUse().equals(thisPlayer.getSelectedCharacter().getType())) {
 				return Response.status(409).build();
 			}

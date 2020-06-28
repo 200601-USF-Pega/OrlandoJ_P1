@@ -74,6 +74,7 @@
                 var item = {};
 
                 item.itemName = document.querySelector("#item-name").value;
+                console.log("setting item to " + item.itemName);
 
                 var req = new XMLHttpRequest();
                 req.onreadystatechange = function () {

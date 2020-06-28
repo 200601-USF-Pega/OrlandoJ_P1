@@ -1,6 +1,5 @@
 package com.revature.mariokartfighter_v2.web;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
@@ -25,6 +24,7 @@ import com.revature.mariokartfighter_v2.dao.PlayerRepoDB;
 import com.revature.mariokartfighter_v2.models.Bot;
 import com.revature.mariokartfighter_v2.models.Item;
 import com.revature.mariokartfighter_v2.models.PlayableCharacter;
+import com.revature.mariokartfighter_v2.models.Player;
 import com.revature.mariokartfighter_v2.service.GameService;
 import com.revature.mariokartfighter_v2.service.PlayerService;
 
@@ -83,17 +83,53 @@ public class FightController {
 		}
 	}
 	
-//	@POST
-//	@Path("/random")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public static Response fightRandom(String playerID) {
-//		logger.info("player " + playerID + " fighting a random player");
-//		Player player1 = playerService.getPlayerObject(playerID);O
-//		Player player2 = playerService.chooseClosestPlayer(player1);
-//		gameService.playerFight(player1, player2);
-//		return Response.status(200).build();
-//	}
-//	
+	@POST
+	@Path("/random")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public static Response fightRandom(Player player) {
+		logger.info("player " + player.getPlayerID() + " fighting a random player");
+		Player player1 = playerService.getPlayerObject(player.getPlayerID());
+		Player player2 = playerService.chooseRandomPlayer(player1);
+		if(player2.getPlayerID().equals("")) {
+			//no available players
+			return Response.status(404).build();
+		}
+		
+		player2.getSelectedCharacter().setCharacterImage(characterRepo.getCharacterImageURL(player2.getSelectedCharacter().getCharacterID()));
+		player2.getSelectedItem().setItemImage(itemRepo.getItemImageURL(player2.getSelectedItem().getItemID()));;
+		
+		Map<String, Boolean> result = gameService.playerFight(player1, player2);
+		String winner = null;
+		boolean leveledUp = false;
+		for(Map.Entry<String, Boolean> entry : result.entrySet()) {
+			winner = entry.getKey();
+			leveledUp = entry.getValue();
+		}
+		
+		if(winner == null) {
+			return Response.status(400).build();
+		}
+		
+		if (winner.equals(player1.getPlayerID())) {			
+			//player wins
+			logger.info("player1 wins!");
+			if(leveledUp) {
+				return Response.ok(player2).status(202).build();
+			} else {				
+				return Response.ok(player2).status(200).build();
+			}
+		} else {
+			//bot wins
+			logger.info("player2 wins!");
+			if(leveledUp) {				
+				return Response.ok(player2).status(203).build();
+			} else {				
+				return Response.ok(player2).status(201).build();
+			}
+		}
+	}
+	
 //	@POST
 //	@Path("/otherplayer")
 //	@Consumes(MediaType.APPLICATION_JSON)
