@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -102,7 +103,7 @@ public class PlayerController {
 		return Response.ok(requestedPlayer).build();
 	}
 	
-	@POST
+	@PUT
 	@Path("/setcharacter/{username}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response setCharacter(PlayableCharacter character, @PathParam("username") String playerID) {
@@ -125,7 +126,7 @@ public class PlayerController {
 		return Response.status(404).build();
 	}
 	
-	@POST
+	@PUT
 	@Path("/setitem/{username}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response setitem(Item item, @PathParam("username") String playerID) {
