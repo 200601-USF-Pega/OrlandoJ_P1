@@ -154,4 +154,25 @@ public class MatchRecordRepoDB implements IMatchRecordRepo {
 		return null;
 	}
 
+	@Override
+	public void deleteMatchRecord(String matchRecordID) {
+		try {
+			PreparedStatement deleteMatch = ConnectionService.getConnection().prepareStatement(
+					"DELETE FROM matchRecord "
+					+ "WHERE matchID = ?;");
+			deleteMatch.setString(1, matchRecordID);
+			
+			PreparedStatement deletePlayerMatch = ConnectionService.getConnection().prepareStatement(
+					"DELETE FROM playerMatchRecord "
+					+ "WHERE matchID = ?;");
+			deletePlayerMatch.setString(1, matchRecordID);
+			
+			deleteMatch.executeUpdate();
+			deletePlayerMatch.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 }

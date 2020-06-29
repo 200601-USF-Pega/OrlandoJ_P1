@@ -165,4 +165,34 @@ public class CharacterRepoDB implements ICharacterRepo {
 		}
 		return "";
 	}
+
+	@Override
+	public void setCharacterImageURl(String characterID, String url) {
+		try {
+			PreparedStatement updateImgURL = ConnectionService.getConnection().prepareStatement(
+					"UPDATE characterImages "
+					+ "SET url = ? "
+					+ "WHERE characterID = ?;");
+			updateImgURL.setString(1, url);
+			updateImgURL.setString(2, characterID);
+			updateImgURL.executeUpdate();
+		} catch(SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}	
+	}
+
+	@Override
+	public void deleteCharacterImageURL(String characterID) {
+		try {
+			PreparedStatement deleteImgURL = ConnectionService.getConnection().prepareStatement(
+					"DELETE FROM characterImages "
+					+ "WHERE characterID = ?;");
+			deleteImgURL.setString(1, characterID);
+			deleteImgURL.executeUpdate();
+		} catch(SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 }

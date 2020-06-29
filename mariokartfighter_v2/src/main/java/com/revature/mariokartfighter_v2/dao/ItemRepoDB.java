@@ -165,4 +165,34 @@ public class ItemRepoDB implements IItemRepo {
 		return "";
 	}
 
+	@Override
+	public void setItemImageURL(String itemID, String url) {
+		try {
+			PreparedStatement updateImgURL = ConnectionService.getConnection().prepareStatement(
+					"UPDATE itemImages "
+					+ "SET url = ? "
+					+ "WHERE itemID = ?;");
+			updateImgURL.setString(1, url);
+			updateImgURL.setString(2, itemID);
+			updateImgURL.executeUpdate();
+		} catch(SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}		
+	}
+
+	@Override
+	public void deleteItemImageURL(String itemID) {
+		try {
+			PreparedStatement deleteImgURL = ConnectionService.getConnection().prepareStatement(
+					"DELETE FROM itemImages "
+					+ "WHERE itemID = ?;");
+			deleteImgURL.setString(1, itemID);
+			deleteImgURL.executeUpdate();
+		} catch(SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 }
