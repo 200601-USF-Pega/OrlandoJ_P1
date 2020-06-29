@@ -23,4 +23,5 @@ public interface IPlayerRepo {
 	public boolean updateAfterFight(boolean wonMatch, String playerID);
 	
 	public void removePlayers(String name);
+	public void removeSpecificPlayer(String name);
 }

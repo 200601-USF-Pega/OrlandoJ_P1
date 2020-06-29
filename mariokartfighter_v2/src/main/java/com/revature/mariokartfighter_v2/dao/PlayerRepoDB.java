@@ -300,6 +300,21 @@ public class PlayerRepoDB implements IPlayerRepo {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void removeSpecificPlayer(String name) {
+		try {
+			PreparedStatement removePlayers = ConnectionService.getConnection().prepareStatement(
+					"DELETE FROM player "
+					+ "WHERE playerID = ?");
+			removePlayers.setString(1, name);
+			removePlayers.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public Map<String,String> getAllPlayersWithPasswords() {

@@ -70,6 +70,20 @@
                     true);
                 xhttp.send();
             }
+            function deleteAccount(){
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status > 199) {
+                        sessionStorage.clear();
+                        window.location.href = "http://localhost:8080/mariokartfighter_v2/index.html";
+                    }
+                };
+                xhttp.open("DELETE",
+                    "http://localhost:8080/mariokartfighter_v2/mariokartfighter_v2/player/deleteaccount/" + sessionStorage.getItem("username"),
+                    true);
+                xhttp.send();
+
+            }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -179,6 +193,11 @@
                             <a class="btn btn-outline-success" type="button" href="item_getinfo.html">Change Item</a>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-danger" type="button" onClick="deleteAccount()">Delete Account</button>
                 </div>
             </div>
         </div>

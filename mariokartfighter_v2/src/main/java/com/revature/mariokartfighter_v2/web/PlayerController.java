@@ -3,6 +3,7 @@ package com.revature.mariokartfighter_v2.web;
 import java.util.LinkedHashMap;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -148,6 +149,13 @@ public class PlayerController {
 	public static Response getAvailableOpponents() {
 		logger.info("getting all players available to fight");
 		return Response.ok(repo.getAvailablePlayers()).build();
+	}
+	
+	@DELETE
+	@Path("/deleteaccount/{username}")
+	public static Response deleteAccount(@PathParam("username") String playerID) {
+		repo.removeSpecificPlayer(playerID);
+		return Response.status(200).build();
 	}
 
 }
