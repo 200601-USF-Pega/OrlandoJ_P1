@@ -97,7 +97,7 @@ public class FightController {
 		}
 		
 		player2.getSelectedCharacter().setCharacterImage(characterRepo.getCharacterImageURL(player2.getSelectedCharacter().getCharacterID()));
-		player2.getSelectedItem().setItemImage(itemRepo.getItemImageURL(player2.getSelectedItem().getItemID()));;
+		player2.getSelectedItem().setItemImage(itemRepo.getItemImageURL(player2.getSelectedItem().getItemID()));
 		
 		Map<String, Boolean> result = gameService.playerFight(player1, player2);
 		String winner = null;
@@ -130,15 +130,46 @@ public class FightController {
 		}
 	}
 	
-//	@POST
-//	@Path("/otherplayer")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public static Response fightPlayer(String playerID, String opponentID) {
-//		logger.info("player " + playerID + " fighting player " + opponentID);
-//		Player player1 = playerService.getPlayerObject(playerID);
-//		Player player2 = playerService.getPlayerObject(opponentID);
-//		gameService.playerFight(player1, player2);
-//		return Response.status(200).build();
-//	}
+	@POST
+	@Path("/otherplayer/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public static Response fightPlayer(@PathParam("username") String playerID, Player opponent) {
+		logger.info("player " + playerID + " fighting player " + opponent.getPlayerID());
+		Player player1 = playerService.getPlayerObject(playerID);
+		Player player2 = playerService.getPlayerObject(opponent.getPlayerID());
+		player2.getSelectedCharacter().setCharacterImage(characterRepo.getCharacterImageURL(player2.getSelectedCharacter().getCharacterID()));
+		player2.getSelectedItem().setItemImage(itemRepo.getItemImageURL(player2.getSelectedItem().getItemID()));
+				
+		Map<String, Boolean> result = gameService.playerFight(player1, player2);
+		String winner = null;
+		boolean leveledUp = false;
+		for(Map.Entry<String, Boolean> entry : result.entrySet()) {
+			winner = entry.getKey();
+			leveledUp = entry.getValue();
+		}
+		
+		if(winner == null) {
+			return Response.status(400).build();
+		}
+		
+		if (winner.equals(player1.getPlayerID())) {			
+			//player wins
+			logger.info("player1 wins!");
+			if(leveledUp) {
+				return Response.ok(player2).status(202).build();
+			} else {				
+				return Response.ok(player2).status(200).build();
+			}
+		} else {
+			//bot wins
+			logger.info("player2 wins!");
+			if(leveledUp) {				
+				return Response.ok(player2).status(203).build();
+			} else {				
+				return Response.ok(player2).status(201).build();
+			}
+		}
+	}
 
 }

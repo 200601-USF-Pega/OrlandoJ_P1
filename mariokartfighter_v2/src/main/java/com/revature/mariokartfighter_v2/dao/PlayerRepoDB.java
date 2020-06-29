@@ -400,7 +400,8 @@ public class PlayerRepoDB implements IPlayerRepo {
 		try {
 			//get all players that are not bots
 			PreparedStatement getPlayers = ConnectionService.getConnection().prepareStatement(
-					"SELECT * FROM player WHERE playerID NOT LIKE ? AND selectedCharacterID IS NOT null AND selectedItemID IS NOT null;");
+					"SELECT * FROM player WHERE playerID NOT LIKE ? AND selectedCharacterID IS NOT null AND selectedItemID IS NOT null "
+					+ "ORDER BY xplevel, playerid;");
 			getPlayers.setString(1, "bot_%");
 			ResultSet playersRS = getPlayers.executeQuery();
 			
