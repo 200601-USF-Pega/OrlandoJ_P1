@@ -88,10 +88,11 @@
                         } else if (this.status == 409) {
                             document.querySelector("#wrong-type-item-alert").style.visibility = "visible";
                         } else {
+                            let itemInfo = JSON.parse(this.response);
                             document.querySelector("#item-set-alert").style.visibility = "visible";
 
-                            sessionStorage.setItem("selectedItem", item.itemName);
-                            sessionStorage.setItem("selectedItemImage", item.itemImage);
+                            sessionStorage.setItem("selectedItem", itemInfo.itemName);
+                            sessionStorage.setItem("selectedItemImage", itemInfo.itemImage);
                         }
                     }
                 }

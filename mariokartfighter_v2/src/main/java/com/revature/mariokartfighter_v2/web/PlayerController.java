@@ -61,6 +61,9 @@ public class PlayerController {
 			return Response.ok(player).build();
 		} else {
 			Player player = playerService.getPlayerObject(playerID);
+			if(player == null) {
+				return Response.status(404).build();
+			}
 			if (player.getSelectedCharacter() != null) {
 				player.getSelectedCharacter().setCharacterImage(characterRepo.getCharacterImageURL(player.getSelectedCharacter().getCharacterID()));
 			}
@@ -106,28 +109,32 @@ public class PlayerController {
 	@PUT
 	@Path("/setcharacter/{username}")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public static Response setCharacter(PlayableCharacter character, @PathParam("username") String playerID) {
 		logger.info("setting character for player " + playerID);
 		//TODO check if item type still allowed
 		Player thisPlayer = playerService.getPlayerObject(playerID);
 		if(character.getCharacterName() != "") {			
 			PlayableCharacter characterInfo = characterRepo.getCharacterInfo(character.getCharacterName());
+			characterInfo.setCharacterImage(characterRepo.getCharacterImageURL(characterInfo.getCharacterID()));
 			repo.assignCharacterToPlayer(characterInfo, playerID);
 			if (thisPlayer.getSelectedItem() != null) {
 				Item itemInfo = itemRepo.getItemInfo(thisPlayer.getSelectedItem().getItemName());
 				if (!itemInfo.getTypeThatCanUse().equals(characterInfo.getType())) {
 					//remove item from player
+					itemInfo.setItemImage(itemRepo.getItemImageURL(itemInfo.getItemID()));
 					repo.assignItemToPlayer(null, playerID);
-					return Response.status(409).build();
+					return Response.ok(characterInfo).status(409).build();
 				}
 			}
-			return Response.status(201).build();
+			return Response.ok(characterInfo).status(201).build();
 		}
 		return Response.status(404).build();
 	}
 	
 	@PUT
 	@Path("/setitem/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public static Response setitem(Item item, @PathParam("username") String playerID) {
 		logger.info("setting item for player " + playerID);
@@ -135,11 +142,12 @@ public class PlayerController {
 		Player thisPlayer = playerService.getPlayerObject(playerID);
 		if (item.getItemName() != "") {			
 			Item itemInfo = itemRepo.getItemInfo(item.getItemName());
+			itemInfo.setItemImage(itemRepo.getItemImageURL(itemInfo.getItemID()));
 			if (thisPlayer.getSelectedCharacter() != null && !itemInfo.getTypeThatCanUse().equals(thisPlayer.getSelectedCharacter().getType())) {
-				return Response.status(409).build();
+				return Response.ok(itemInfo).status(409).build();
 			}
 			repo.assignItemToPlayer(itemRepo.getItemInfo(item.getItemName()), playerID);
-			return Response.status(201).build();
+			return Response.ok(itemInfo).status(201).build();
 		}
 		return Response.status(404).build();
 	}

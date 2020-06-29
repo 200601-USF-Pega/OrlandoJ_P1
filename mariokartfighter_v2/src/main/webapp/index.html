@@ -7,6 +7,7 @@
             function clearAlerts() {
                 document.querySelector("#login-alert").style.visibility = "hidden";
                 document.querySelector("#create-alert").style.visibility = "hidden";
+                document.querySelector("#player-dne-alert").style.visibility = "hidden";
             }
             function loginPlayer() {
                 var params = {};
@@ -67,6 +68,8 @@
                                 document.querySelector("#login-alert").style.visibility = "visible";     
                                 console.log("login player alert");
                             }
+                        } else if(this.status == 404) {
+                            document.querySelector("#player-dne-alert").style.visibility = "visible";
                         } else if (this.status == 409){
                             //username exists
                             if (params.newPlayer == "true") {
@@ -148,6 +151,9 @@
                     </div>
                     <div class="alert alert-danger form-group" role="alert" id="login-alert">
                         Invalid username and/or password. Please try again.
+                    </div>
+                    <div class="alert alert-danger form-group" role="alert" id="player-dne-alert">
+                        Player does not exist.
                     </div>
                 </div>
             </div>

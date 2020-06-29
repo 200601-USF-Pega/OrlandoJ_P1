@@ -125,7 +125,8 @@ public class PlayerService {
 			}
 		}
 		logger.warn("player " + playerID + "does not exist");
-		throw new RuntimeException("player does not exist");
+		return null;
+//		throw new RuntimeException("player does not exist");
 	}
 	
 	public boolean checkPlayerExists(String playerID) {

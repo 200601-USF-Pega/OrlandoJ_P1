@@ -84,23 +84,25 @@
                         if(this.status == 404){
                             document.querySelector("#no-character-alert").style.visibility = "visible";
                         } else if (this.status == 409) {
+                            let characterInfo = JSON.parse(this.response);
                             //character type doesnt match item type
                             console.log("type mismatch");
                             document.querySelector("#character-set-alert").style.visibility = "visible";
                             document.querySelector("#wrong-type-character-alert").style.visibility = "visible";
 
-                            sessionStorage.setItem("selectedCharacter", character.characterName);
-                            sessionStorage.setItem("selectedCharacterImage", character.characterImage);
+                            sessionStorage.setItem("selectedCharacter", characterInfo.characterName);
+                            sessionStorage.setItem("selectedCharacterImage", characterInfo.characterImage);
 
                             //remove item from player
                             sessionStorage.setItem("selectedItem", null);
                             sessionStorage.setItem("selectedItemImage", null);
                         } else {
+                            let characterInfo = JSON.parse(this.response);
                             //character matches item type
                             document.querySelector("#character-set-alert").style.visibility = "visible";
 
-                            sessionStorage.setItem("selectedCharacter", character.characterName);
-                            sessionStorage.setItem("selectedCharacterImage", character.characterImage);
+                            sessionStorage.setItem("selectedCharacter", characterInfo.characterName);
+                            sessionStorage.setItem("selectedCharacterImage", characterInfo.characterImage);
                         }
                     }
                 }
